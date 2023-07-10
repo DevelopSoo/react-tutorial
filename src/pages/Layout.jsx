@@ -1,5 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router";
+import { Link } from "react-router-dom";
 
 export default function Layout() {
   return (
@@ -21,15 +22,36 @@ export default function Layout() {
           color: "white",
         }}
       >
-        <div>로고</div>
+        <Link
+          to="/"
+          style={{
+            color: "white",
+          }}
+        >
+          <div>로고</div>
+        </Link>
         <div
           style={{
             display: "flex",
             gap: "12px",
           }}
         >
-          <div>로그인</div>
-          <div>회원가입</div>
+          <Link
+            to="/login"
+            style={{
+              color: "white",
+            }}
+          >
+            <div>로그인</div>
+          </Link>
+          <Link
+            to="/signup"
+            style={{
+              color: "white",
+            }}
+          >
+            <div>회원가입</div>
+          </Link>
         </div>
       </header>
       <Outlet />

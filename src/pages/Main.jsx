@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-export default function Main() {
+export default function Main({ products }) {
   const navigate = useNavigate();
   return (
     <>
@@ -43,33 +43,22 @@ export default function Main() {
               gap: "24px",
             }}
           >
-            <div
-              style={{
-                width: "200px",
-                height: "240px",
-                backgroundColor: "#068FFF",
-              }}
-            >
-              상품1
-            </div>
-            <div
-              style={{
-                width: "200px",
-                height: "240px",
-                backgroundColor: "#068FFF",
-              }}
-            >
-              상품2
-            </div>
-            <div
-              style={{
-                width: "200px",
-                height: "240px",
-                backgroundColor: "#068FFF",
-              }}
-            >
-              상품3
-            </div>
+            {products.map((product) => {
+              return (
+                <div
+                  key={product.id}
+                  style={{
+                    width: "200px",
+                    height: "240px",
+                    backgroundColor: "#068FFF",
+                    color: "white",
+                  }}
+                >
+                  <div>{product.name}</div>
+                  <div>{product.price} 원</div>
+                </div>
+              );
+            })}
             <Link to="/products">더보기</Link>
           </div>
         </section>
