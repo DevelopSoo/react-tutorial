@@ -1,5 +1,5 @@
 function App() {
-  return <>dev 브랜치 수정</>;
+  return <>메인으로 머지해볼까?</>;
 }
 
 export default App;
