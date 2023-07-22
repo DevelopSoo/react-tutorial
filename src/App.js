@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Main from "./pages/Main";
 import Detail from "./pages/Detail";
 import Create from "./pages/Create";
+import Edit from "./pages/Edit";
 
 function App() {
   return (
@@ -11,7 +12,7 @@ function App() {
       <Route path="/" element={<Main />} />
       <Route path="/detail/:id" element={<Detail />} />
       <Route path="/create" element={<Create />} />
-      <Route path="/edit" element={<>수정페이지</>} />
+      <Route path="/edit" element={<Edit />} />
       <Route path="/signup" element={<>회원가입페이지</>} />
       <Route path="/login" element={<>로그인페이지</>} />
     </Routes>
