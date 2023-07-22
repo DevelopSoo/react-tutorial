@@ -1,4 +1,3 @@
-import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaHome } from "react-icons/fa";
 
@@ -18,6 +17,9 @@ export default function Header() {
         style={{
           color: "gray",
           cursor: "pointer",
+        }}
+        onClick={() => {
+          navigate("/");
         }}
       >
         <FaHome />

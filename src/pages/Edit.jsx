@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import { Fragment } from "react";
 import Header from "../common/Header";
 import Container from "../common/Container";
 
