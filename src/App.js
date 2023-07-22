@@ -1,57 +1,19 @@
-import { Route, Routes } from "react-router";
+import { Routes, Route } from "react-router-dom";
 import Main from "./pages/Main";
-import Products from "./pages/Products";
-import Product from "./pages/Product";
-import Layout from "./pages/Layout";
-import { Link } from "react-router-dom";
-import { useState } from "react";
-import { nanoid } from "nanoid";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
+import Detail from "./pages/Detail";
+import Create from "./pages/Create";
 
 function App() {
-  const [products, setProducts] = useState([
-    {
-      id: nanoid(),
-      name: "멋진 바지",
-      price: 20000,
-      options: [28, 30, 32],
-      likes: 100,
-    },
-    {
-      id: nanoid(),
-      name: "멋진 셔츠",
-      price: 10000,
-      options: ["small", "medium", "large"],
-      likes: 200,
-    },
-    {
-      id: nanoid(),
-      name: "멋진 신발",
-      price: 30000,
-      options: [230, 240, 250, 260, 270],
-      likes: 300,
-    },
-  ]);
-
   return (
+    // 페이지 이동에 사용되는 Route 태그를 위해선 Routes로 먼저 감싸야 한다.
     <Routes>
-      <Route element={<Layout />}>
-        <Route path="/" element={<Main products={products} />} />
-        <Route path="/products" element={<Products products={products} />} />
-        <Route path="/products/:id" element={<Product products={products} />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-      </Route>
-      <Route
-        path="*"
-        element={
-          <>
-            <div>없는 페이지입니다.</div>
-            <Link to="/">홈으로 이동</Link>
-          </>
-        }
-      />
+      {/* path="/"이기 때문에 '<주소>/'인 주소로 접속할 경우 Main 컴포넌트가 화면에 보여지게 된다.  */}
+      <Route path="/" element={<Main />} />
+      <Route path="/detail/:id" element={<Detail />} />
+      <Route path="/create" element={<Create />} />
+      <Route path="/edit" element={<>수정페이지</>} />
+      <Route path="/signup" element={<>회원가입페이지</>} />
+      <Route path="/login" element={<>로그인페이지</>} />
     </Routes>
   );
 }
