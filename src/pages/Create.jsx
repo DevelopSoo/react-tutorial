@@ -3,8 +3,11 @@ import Container from "../common/Container";
 import { useState } from "react";
 import { nanoid } from "nanoid";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addPost } from "../redux/posts";
 
-export default function Create({ setPosts }) {
+export default function Create() {
+  const dispatch = useDispatch();
   const [inputs, setInputs] = useState({
     title: "",
     content: "",
@@ -29,16 +32,13 @@ export default function Create({ setPosts }) {
           }}
           onSubmit={(e) => {
             e.preventDefault();
-            setPosts((prev) => {
-              return [
-                ...prev,
-                {
-                  id: nanoid(),
-                  author: "병수",
-                  ...inputs,
-                },
-              ];
-            });
+            dispatch(
+              addPost({
+                id: nanoid(),
+                author: "병수",
+                ...inputs,
+              })
+            );
             navigate("/");
           }}
         >

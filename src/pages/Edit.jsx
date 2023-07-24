@@ -2,8 +2,10 @@ import { Fragment, useState } from "react";
 import Header from "../common/Header";
 import Container from "../common/Container";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { editPost } from "../redux/posts";
 
-export default function Edit({ setPosts }) {
+export default function Edit() {
   const { state } = useLocation();
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({
@@ -11,6 +13,7 @@ export default function Edit({ setPosts }) {
     content: state?.post.content || "",
   });
 
+  const dispatch = useDispatch();
   const onChangeHandler = (e) => {
     setInputs((prev) => ({
       ...prev,
@@ -31,16 +34,14 @@ export default function Edit({ setPosts }) {
           }}
           onSubmit={(e) => {
             e.preventDefault();
-            setPosts((prev) => {
-              return prev.map((post) =>
-                post.id === state?.post.id
-                  ? {
-                      ...post,
-                      ...inputs,
-                    }
-                  : post
+            if (state) {
+              dispatch(
+                editPost({
+                  ...state.post,
+                  ...inputs,
+                })
               );
-            });
+            }
             navigate("/");
           }}
         >
