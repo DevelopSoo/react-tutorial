@@ -1,7 +1,10 @@
-import {Route, Routes} from "react-router-dom";
-import Main from "../pages/Main";
-import Detail from "../pages/Detail";
-import Create from "../pages/Create";
+import { Route, Routes } from 'react-router-dom';
+import Main from '../pages/Main';
+import Detail from '../pages/Detail';
+import Create from '../pages/Create';
+import Edit from '../pages/Edit';
+import Login from '../pages/Login';
+import Signup from '../pages/Signup';
 
 const Router = () => {
   return (
@@ -11,9 +14,12 @@ const Router = () => {
       <Route path="/" element={<Main />} />
       <Route path="/detail/:id" element={<Detail />} />
       <Route path="/create" element={<Create />} />
-      <Route path="/edit" element={<>수정페이지</>} />
-      <Route path="/signup" element={<>회원가입페이지</>} />
-      <Route path="/login" element={<>로그인페이지</>} />
+      {/* - 메인 페이지(`/`), 상세페이지(`/detail/:id`)에서 **수정 버튼** 클릭 시 **수정 컴포넌트** 보여주기 */}
+      <Route path="/edit" element={<Edit />} />
+      {/* - **로그인 버튼** 클릭 시 **로그인 컴포넌트** 보여주기 */}
+      <Route path="/signup" element={<Login />} />
+      {/* - **회원가입 버튼** 클릭 시 **회원가입 컴포넌트** 보여주기 */}
+      <Route path="/login" element={<Signup />} />
     </Routes>
   );
 };
