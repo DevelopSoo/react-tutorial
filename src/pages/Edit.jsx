@@ -11,17 +11,12 @@ export default function Edit(props) {
   // content의 id와 동일한 요소만 필터링해준다.
   // content의 요소인 객체를 바로 활용하기 위해 [content]로 선언함.
   const [item] = props.items.filter((item) => item.id === id);
-  const setItems = props.setItems;
   // title, content 수정을 위해 useState 선언
   const [title, setTitle] = useState(item.title);
   const [content, setContent] = useState(item.content);
-
   const navigate = useNavigate();
 
-  // 수정된 title, content item에 반영
-  const editedItem = { ...item, title: title, content: content };
-
-  // input title 수정사항 반영하기
+  // input title, content 수정사항 반영하기
   const titleChangeHandler = (e) => {
     setTitle(e.target.value);
   };
@@ -29,6 +24,13 @@ export default function Edit(props) {
   const contentChangeHandler = (e) => {
     setContent(e.target.value);
   };
+
+  // 수정된 title, content 반영하기
+  const editedItems = props.items.map((item) =>
+    // 맵 함수로 돌면서 수정 페이지의 id에 해당하는 item의 요소는 title, content 수정
+    // 다른 id의 item은 그대로 유지
+    item.id === id ? { ...item, title: title, content: content } : item
+  );
 
   return (
     <Fragment>
@@ -43,7 +45,8 @@ export default function Edit(props) {
           }}
           onSubmit={(e) => {
             e.preventDefault();
-            setItems([...props.items, editedItem]);
+            // 수정된 editeditems로 itmes 데이터를 업데이트
+            props.setItems(editedItems);
             navigate("/");
           }}
         >
@@ -99,7 +102,6 @@ export default function Edit(props) {
               backgroundColor: "orange",
               cursor: "pointer",
             }}
-            onClick={() => {}}
           >
             수정하기
           </button>
