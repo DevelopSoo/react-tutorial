@@ -9,7 +9,7 @@ export default function Detail({ posts }) {
   // 객체 안의 id값만을 사용하려면 구조분해할당으로 뽑아낸다.
   const { id } = useParams();
 
-  // items의 id값 === 현재 URL id값이 일치하는 상품을 찾아낸다.
+  // items의 id값 === 현재 URL id값이 일치하는 데이터를 찾아낸다.
   const data = posts.find((post) => post.id === id);
 
   // 구조분해할당으로 필요한 데이터 뽑아내기
@@ -48,7 +48,7 @@ export default function Detail({ posts }) {
         >
           <button
             onClick={() => {
-              navigate("/edit");
+              navigate(`/edit/${id}`);
             }}
             style={{
               border: "none",

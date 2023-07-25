@@ -1,8 +1,13 @@
 import React, { Fragment } from "react";
 import Header from "../common/Header";
 import Container from "../common/Container";
+import { useParams } from "react-router-dom";
 
-export default function Edit() {
+export default function Edit({ posts }) {
+  const { id } = useParams();
+  const data = posts.find((post) => post.id === id);
+  const { title, content } = data;
+
   return (
     <Fragment>
       <Header />
@@ -21,7 +26,7 @@ export default function Edit() {
         >
           <div>
             <input
-              placeholder="제목"
+              placeholder={title}
               style={{
                 width: "100%",
                 height: "60px",
@@ -39,7 +44,7 @@ export default function Edit() {
             }}
           >
             <textarea
-              placeholder="내용"
+              placeholder={content}
               style={{
                 resize: "none",
                 height: "100%",
