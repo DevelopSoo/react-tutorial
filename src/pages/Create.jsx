@@ -3,7 +3,7 @@ import React from "react";
 import Header from "../common/Header";
 import Container from "../common/Container";
 
-export default function Create() {
+export default function Create({ addMemo }) {
   return (
     <>
       <Header />

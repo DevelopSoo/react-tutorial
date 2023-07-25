@@ -1,9 +1,12 @@
 import React from "react";
 import Header from "../common/Header";
 import Container from "../common/Container";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-export default function Detail() {
+export default function Detail({ memoData }) {
+  const { id } = useParams();
+  const memo = memoData.find((memo) => memo.id === id);
+
   const navigate = useNavigate();
   return (
     <>
@@ -16,7 +19,7 @@ export default function Detail() {
             padding: "12px",
           }}
         >
-          제목
+          {memo.title}
         </h1>
         <div
           style={{
@@ -26,10 +29,7 @@ export default function Detail() {
             padding: "12px",
           }}
         >
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad doloribus
-          blanditiis vitae sapiente. Expedita delectus nihil animi pariatur,
-          labore quod officiis dolor fugit. Mollitia quod, delectus velit
-          deleniti nihil veniam!
+          {memo.content}
         </div>
         <div
           style={{
@@ -39,9 +39,7 @@ export default function Detail() {
           }}
         >
           <button
-            onClick={() => {
-              navigate("/edit");
-            }}
+            onClick={() => navigate(`/edit/${memo.id}`)}
             style={{
               border: "none",
               padding: "8px",
