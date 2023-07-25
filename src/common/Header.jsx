@@ -15,6 +15,9 @@ export default function Header() {
       }}
     >
       <h1
+        onClick={() => {
+          navigate("/");
+        }}
         style={{
           color: "gray",
           cursor: "pointer",
