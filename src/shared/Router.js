@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
-import Main from '../pages/Main';
+import Main from '../pages/main/Main';
 import Detail from '../pages/Detail';
 import Create from '../pages/Create';
 import Edit from '../pages/Edit';
