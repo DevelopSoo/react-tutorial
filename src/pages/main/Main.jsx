@@ -16,9 +16,8 @@ export default function Main() {
     - author - 작성자입니다.
   */
 
-  const todos = useSelector((state) => {
-    return state.todos;
-  });
+  // refactor. redux toolkit
+  const todos = useSelector((state) => state.todos);
 
   const navigate = useNavigate();
   return (
@@ -48,7 +47,7 @@ export default function Main() {
                 <S.TodoItemContent
                   onClick={() => {
                     // detail Page ID값 추가
-                    navigate(`/detail/${item.id}}`);
+                    navigate(`/detail/${item.id}`);
                   }}
                 >
                   {/* item.title에 접근해 제목을 출력합니다. */}
@@ -61,8 +60,8 @@ export default function Main() {
                   <S.Author>{item.author}</S.Author>
                   <div>
                     <Button
-                      variant="outline"
-                      color="blue"
+                      variant="solid"
+                      color="orange"
                       onClick={() => {
                         navigate('/edit');
                       }}
