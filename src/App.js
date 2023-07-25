@@ -40,7 +40,10 @@ function App() {
         path="/create"
         element={<Create posts={posts} setPosts={setPosts} />}
       />
-      <Route path="/edit/:id" element={<Edit posts={posts} />} />
+      <Route
+        path="/edit/:id"
+        element={<Edit posts={posts} setPosts={setPosts} />}
+      />
       <Route path="/signup" element={<Signup />} />
       <Route path="/login" element={<Login />} />
     </Routes>

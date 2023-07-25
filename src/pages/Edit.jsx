@@ -1,12 +1,19 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import Header from "../common/Header";
 import Container from "../common/Container";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-export default function Edit({ posts }) {
+export default function Edit({ posts, setPosts }) {
   const { id } = useParams();
+  // console.log(id);
+  // console.log(posts);
   const data = posts.find((post) => post.id === id);
   const { title, content } = data;
+
+  // 기존 글을 불러오려면 useState(초기값)안에 기존 데이터값을 넣으면 된다!!
+  const [editTitle, setEditTilte] = useState(title); // 변경된 제목 상태 관리
+  const [editContent, setEditContent] = useState(content); // 변경된 내용 상태 관리
+  const navigate = useNavigate();
 
   return (
     <Fragment>
@@ -22,11 +29,31 @@ export default function Edit({ posts }) {
           onSubmit={(e) => {
             e.preventDefault();
             console.log("제출!");
+
+            // const editPost = {
+            //   title: editTitle,
+            //   content: editContent,
+            // };
+
+            // const editPost = [...posts, updatePost]; // 새롭게 데이터를 추가 하는게 아니라 기존의 것 안에 넣고 싶은 건데 .. 어떻게 해야 할까?
+            // 요놈이 문제야. 내가 있는 페이지의 id값을 post.id와 비교해서 넣는 삼항연산자 때려.
+            setPosts(
+              posts.map((post) =>
+                post.id === id
+                  ? { ...post, title: editTitle, content: editContent }
+                  : post
+              )
+            );
+            navigate("/");
           }}
         >
           <div>
             <input
-              placeholder={title}
+              placeholder="제목"
+              value={editTitle}
+              onChange={(e) => {
+                setEditTilte(e.target.value);
+              }}
               style={{
                 width: "100%",
                 height: "60px",
@@ -44,7 +71,11 @@ export default function Edit({ posts }) {
             }}
           >
             <textarea
-              placeholder={content}
+              placeholder="내용"
+              value={editContent}
+              onChange={(e) => {
+                setEditContent(e.target.value);
+              }}
               style={{
                 resize: "none",
                 height: "100%",
