@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaHome } from "react-icons/fa";
+import { FaHome, FaItchIo } from "react-icons/fa";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -20,7 +20,10 @@ export default function Header() {
           cursor: "pointer",
         }}
       >
-        <FaHome />
+        {/* 홈 로고 클릭 시 메인페이지(/)로 이동 */}
+        <Link to="/">
+          <FaHome />
+        </Link>
       </h1>
       <div
         style={{
