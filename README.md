@@ -1,70 +1,40 @@
-# Getting Started with Create React App
+# 1. useState & react-router-dom
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 1. 모든 페이지가 CSR(Client Side Rendering)로 이동되도록 설정합니다.
 
-## Available Scripts
+    - 홈 로고 클릭 시 메인페이지(`/`)로 이동
+    - 메인 페이지(`/`), 상세페이지(`/detail/:id`)에서 **수정 버튼** 클릭 시 **수정 컴포넌트** 보여주기
+    - **로그인 버튼** 클릭 시 **로그인 컴포넌트** 보여주기
+    - **회원가입 버튼** 클릭 시 **회원가입 컴포넌트** 보여주기
+    - hint: **react-router-dom** 활용하기
 
-In the project directory, you can run:
+## 2. `useState`를 활용하여 **임시 데이터(최소 3개)**를 만들고, **메인페이지**(`/`)에 보여줍니다.
 
-### `npm start`
+    - db.json은 아직 **활용하지 않습니다.**
+    - 게시물 데이터엔 다음과 같은 데이터가 존재해야 합니다.
+        - id - 고유한 아이디여야 합니다
+        - title - 제목입니다.
+        - content - 내용입니다.
+        - author - 작성자입니다. 추후에 firebase와 연결 후 이메일을 여기에 작성하겠습니다.
+    - **map**을 활용합니다. → map이 어떻게 동작하는지 설명할 줄 알아야 합니다. (주석으로 작성해놓으세요)
+    - **map** 내부에 **key값 관련 warning**이 발생하지 않도록 합니다.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 3. 메인페이지에서 **각 게시물을 클릭**했을 때, 해당 게시물의 데이터를 **상세페이지**에 보여줍니다.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+    - `react-router-dom`의 `useParams`를 활용해봅니다.
+    - 주소 예시
+        - id가 1인 게시물의 주소: `<주소>/detail/1`
+        - id가 10인 게시물의 주소: `<주소>/detail/10`
+    - id가 일치하는 게시물의 제목, 내용을 보여줘야 합니다.
 
-### `npm test`
+## 4. **메인페이지** 혹은 **상세페이지**에서 **수정 버튼** 클릭 시 해당 게시물의 데이터(제목, 내용)가 `input`에 **기본 값**으로 들어가도록 합니다.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 5. **수정 페이지**에서 데이터 수정 후, **수정 버튼 클**릭 시 기존의 `useState`의 데이터에서 **데이터가 변경**되게 합니다.
 
-### `npm run build`
+    - 수정 후 자동으로 메인페이지로 이동하도록 만들어주세요.
+    - **hint**: Link 혹은 useNavigate 활용
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 6. **메인페이지** 혹은 **상세페이지**에서 **삭제 버튼** 클릭 시 `useState`의 데이터에서 **해당 데이터를 삭제**합니다.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+    - 삭제 후 자동으로 메인페이지로 이동하도록 만들어주세요.
+    - **hint**: Link 혹은 useNavigate 활용
