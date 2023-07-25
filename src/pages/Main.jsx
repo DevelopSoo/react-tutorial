@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import Header from "../common/Header";
 import Container from "../common/Container";
 
-export default function Main() {
+export default function Main({ posts }) {
+  // console.log(posts);
+
   const navigate = useNavigate();
   return (
     <>
@@ -32,9 +34,13 @@ export default function Main() {
             추가
           </button>
         </div>
-        {[1, 2, 3, 4].map((item) => (
+
+        {/* map() : 배열 안의 값들을 순회하면서 화면 렌더링.  */}
+        {/* map함수를 실행하고 return하는 최상단 태그 안에 key값을 입력해야 한다.
+            그 이유는 개별 요소를 id값으로 빠르게 구분해주기 위해서. */}
+        {posts.map((post) => (
           <div
-            key={item}
+            key={post.id}
             style={{
               backgroundColor: "#EEEEEE",
               height: "100px",
@@ -46,7 +52,7 @@ export default function Main() {
           >
             <div
               onClick={() => {
-                navigate("/detail/1");
+                navigate(`/detail/${post.id}`);
               }}
               style={{
                 flex: 4,
@@ -54,7 +60,7 @@ export default function Main() {
                 cursor: "pointer",
               }}
             >
-              <h2>제목</h2>
+              <h2>{post.title}</h2>
               <p
                 style={{
                   width: "300px",
@@ -63,10 +69,7 @@ export default function Main() {
                   whiteSpace: "nowrap",
                 }}
               >
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit.Lorem
-                ipsum dolor, sit amet consectetur adipisicing elit.Lorem ipsum
-                dolor, sit amet consectetur adipisicing elit.Lorem ipsum dolor,
-                sit amet consectetur adipisicing elit.
+                {post.content}
               </p>
             </div>
             <div
@@ -79,11 +82,11 @@ export default function Main() {
                 gap: "12px",
               }}
             >
-              <div>작성자</div>
+              <div> {post.author}</div>
               <div>
                 <button
                   onClick={() => {
-                    navigate("/edit");
+                    navigate(`/edit/${post.id}`);
                   }}
                   style={{
                     border: "none",
