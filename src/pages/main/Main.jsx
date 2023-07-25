@@ -20,6 +20,13 @@ export default function Main() {
   const todos = useSelector((state) => state.todos);
 
   const navigate = useNavigate();
+
+  const deleteHandler = () => {
+    if (!window.confirm('삭제할까')) {
+      return;
+    }
+  };
+
   return (
     <>
       <Header />
@@ -68,13 +75,8 @@ export default function Main() {
                     >
                       수정
                     </Button>
-                    <Button
-                      variant="solid"
-                      color="red"
-                      onClick={() => {
-                        alert('삭제할까?');
-                      }}
-                    >
+                    {/* alert 확인 버튼 클릭시 삭제 작동하게 변경 */}
+                    <Button variant="solid" color="red" onClick={deleteHandler}>
                       삭제
                     </Button>
                   </div>

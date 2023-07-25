@@ -17,6 +17,14 @@ export default function Detail() {
   // todos id와 params id 값을 비교해서 일치하는 첫번째 항목을 가져옵니다.
   const filteredTodo = todos.find((todo) => todo.id === id);
 
+  const deleteHandler = () => {
+    if (!window.confirm('삭제할까')) {
+      return;
+    }
+
+    navigate('/');
+  };
+
   if (!filteredTodo) {
     return <div>No todo found with the provided id</div>;
   }
@@ -46,13 +54,7 @@ export default function Detail() {
           >
             수정
           </Button>
-          <Button
-            variant="solid"
-            color="red"
-            onClick={() => {
-              alert('삭제할까?');
-            }}
-          >
+          <Button variant="solid" color="red" onClick={deleteHandler}>
             삭제
           </Button>
         </div>
