@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import Header from '../../common/Header';
 import Container from '../../common/Container';
 import { useParams } from 'react-router-dom';
@@ -8,13 +8,15 @@ import * as S from './Edit.styled';
 export default function Edit({ todos, setTodos }) {
   const { id } = useParams();
 
-  // console.log(id);
-  // console.log('todos: ', todos[0].id);
-
   const filteredTodo = todos.find((todo) => todo.id === id);
+  console.log('filteredTodo', filteredTodo);
+
+  if (!filteredTodo) {
+    return <div>No todo found with the provided id</div>;
+  }
 
   return (
-    <Fragment>
+    <>
       <Header />
       <Container>
         <S.FormLayout
@@ -43,6 +45,6 @@ export default function Edit({ todos, setTodos }) {
           </Button>
         </S.FormLayout>
       </Container>
-    </Fragment>
+    </>
   );
 }
