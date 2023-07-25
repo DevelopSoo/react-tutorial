@@ -36,7 +36,10 @@ function App() {
       {/* path="/"이기 때문에 '<주소>/'인 주소로 접속할 경우 Main 컴포넌트가 화면에 보여지게 된다.  */}
       <Route path="/" element={<Main posts={posts} />} />
       <Route path="/detail/:id" element={<Detail posts={posts} />} />
-      <Route path="/create" element={<Create />} />
+      <Route
+        path="/create"
+        element={<Create posts={posts} setPosts={setPosts} />}
+      />
       <Route path="/edit/:id" element={<Edit posts={posts} />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/login" element={<Login />} />
