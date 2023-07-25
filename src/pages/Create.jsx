@@ -1,9 +1,38 @@
-import React from "react";
-
+import React, { useState } from "react";
 import Header from "../common/Header";
 import Container from "../common/Container";
+import { useNavigate } from "react-router-dom";
+import uuid from "react-uuid";
 
-export default function Create() {
+export default function Create(props) {
+  // title, content 수정을 위해 useState 선언
+  const [title, setTitle] = useState();
+  const [content, setContent] = useState();
+  const navigate = useNavigate();
+
+  // input title, content 수정사항 반영하기
+  const titleChangeHandler = (e) => {
+    setTitle(e.target.value);
+  };
+
+  const contentChangeHandler = (e) => {
+    setContent(e.target.value);
+  };
+
+  const itemAddHandler = () => {
+    // 입력된 title, content를 포함한 새로운 객체 생성
+    const newItem = {
+      id: uuid(),
+      title,
+      content,
+      author: `작성자${props.items.length + 1}`,
+    };
+    // 기존 items를 전개연산자를 통해 분해하여 배열에 새로운 객체 추가
+    props.setItems([...props.items, newItem]);
+    // 추가 후 메인페이지로 이동
+    navigate("/");
+  };
+
   return (
     <>
       <Header />
@@ -32,6 +61,10 @@ export default function Create() {
                 padding: "8px",
                 boxSizing: "border-box",
               }}
+              // onchange로 input 값 상태 변경 감지
+              onChange={(e) => {
+                titleChangeHandler(e);
+              }}
             />
           </div>
           <div
@@ -51,6 +84,10 @@ export default function Create() {
                 padding: "12px",
                 boxSizing: "border-box",
               }}
+              // onchange로 input 값 상태 변경 감지
+              onChange={(e) => {
+                contentChangeHandler(e);
+              }}
             />
           </div>
           <button
@@ -63,6 +100,7 @@ export default function Create() {
               backgroundColor: "skyblue",
               cursor: "pointer",
             }}
+            onClick={itemAddHandler}
           >
             추가하기
           </button>

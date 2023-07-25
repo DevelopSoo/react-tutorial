@@ -44,7 +44,10 @@ function App() {
         path="/detail/:id"
         element={<Detail items={items} setItems={setItems} />}
       />
-      <Route path="/create" element={<Create />} />
+      <Route
+        path="/create"
+        element={<Create items={items} setItems={setItems} />}
+      />
       <Route
         path="/edit/:id"
         element={<Edit items={items} setItems={setItems} />}
