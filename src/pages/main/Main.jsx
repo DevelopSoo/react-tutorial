@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../common/Header';
 import Container from '../../common/Container';
-import uuid from 'react-uuid';
 import * as S from './Main.styled';
 import Button from '../../components/button/Button';
-import { useSelector } from 'react-redux';
 
-export default function Main() {
+export default function Main({ todos }) {
   /*
   게시물 데이터엔 다음과 같은 데이터가 존재해야 합니다.
     - id - 고유한 아이디여야 합니다
@@ -15,9 +13,6 @@ export default function Main() {
     - content - 내용입니다.
     - author - 작성자입니다.
   */
-
-  // refactor. redux toolkit
-  const todos = useSelector((state) => state.todos);
 
   const navigate = useNavigate();
   return (
@@ -63,7 +58,7 @@ export default function Main() {
                       variant="solid"
                       color="orange"
                       onClick={() => {
-                        navigate('/edit');
+                        navigate(`/edit/${item.id}`);
                       }}
                     >
                       수정
