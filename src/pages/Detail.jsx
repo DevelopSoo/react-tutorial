@@ -1,9 +1,20 @@
 import React from "react";
 import Header from "../common/Header";
 import Container from "../common/Container";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-export default function Detail() {
+export default function Detail({ posts }) {
+  // useParams를 이용해 url의 id를 가져온다.
+  // useParams는 객체 형태로 데이터 값을 반환하며,
+  // 객체 안의 id값만을 사용하려면 구조분해할당으로 뽑아낸다.
+  const { id } = useParams();
+
+  // items의 id값 === 현재 URL id값이 일치하는 상품을 찾아낸다.
+  const data = posts.find((post) => post.id === id);
+
+  // 구조분해할당으로 필요한 데이터 뽑아내기
+  const { title, content } = data;
+
   const navigate = useNavigate();
   return (
     <>
@@ -16,7 +27,7 @@ export default function Detail() {
             padding: "12px",
           }}
         >
-          제목
+          {title}
         </h1>
         <div
           style={{
@@ -26,10 +37,7 @@ export default function Detail() {
             padding: "12px",
           }}
         >
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad doloribus
-          blanditiis vitae sapiente. Expedita delectus nihil animi pariatur,
-          labore quod officiis dolor fugit. Mollitia quod, delectus velit
-          deleniti nihil veniam!
+          {content}
         </div>
         <div
           style={{

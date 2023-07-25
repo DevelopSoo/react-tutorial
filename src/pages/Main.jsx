@@ -4,7 +4,7 @@ import Header from "../common/Header";
 import Container from "../common/Container";
 
 export default function Main({ posts }) {
-  // console.log({ posts });
+  // console.log(posts);
 
   const navigate = useNavigate();
   return (
@@ -52,7 +52,7 @@ export default function Main({ posts }) {
           >
             <div
               onClick={() => {
-                navigate("/detail/1");
+                navigate(`/detail/${post.id}`);
               }}
               style={{
                 flex: 4,
