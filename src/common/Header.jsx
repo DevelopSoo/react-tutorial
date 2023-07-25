@@ -20,7 +20,7 @@ export default function Header() {
           cursor: "pointer",
         }}
       >
-        <FaHome />
+        <FaHome onClick={() => navigate("/")} />
       </h1>
       <div
         style={{

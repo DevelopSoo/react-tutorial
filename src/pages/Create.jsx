@@ -2,8 +2,35 @@ import React from "react";
 
 import Header from "../common/Header";
 import Container from "../common/Container";
+import { nanoid } from "nanoid";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function Create() {
+export default function Create({ todos, setTodos }) {
+  const navigate = useNavigate();
+  //새로 추가한 거 담을 상자
+  const [createTodo, setCreateTodo] = useState({
+    title: "",
+    content: "",
+  });
+  const submitHandler = (e) => {
+    e.preventDefault();
+    //새로운 할일 객체 생성
+    const newTodo = {
+      id: nanoid(),
+      title: createTodo.title,
+      content: createTodo.content,
+    };
+    //기존 할일에 새로운 할일 추가
+    setTodos([...todos, newTodo]);
+    //다 입력 후 값 비워줌
+    setCreateTodo({
+      title: "",
+      content: "",
+    });
+    navigate("/");
+  };
+
   return (
     <>
       <Header />
@@ -15,13 +42,14 @@ export default function Create() {
             flexDirection: "column",
             justifyContent: "space-evenly",
           }}
-          onSubmit={(e) => {
-            e.preventDefault();
-            console.log("제출!");
-          }}
+          onSubmit={submitHandler}
         >
           <div>
             <input
+              value={createTodo.title}
+              onChange={(e) => {
+                setCreateTodo({ ...createTodo, title: e.target.value });
+              }}
               placeholder="제목"
               style={{
                 width: "100%",
@@ -40,6 +68,10 @@ export default function Create() {
             }}
           >
             <textarea
+              value={createTodo.content}
+              onChange={(e) => {
+                setCreateTodo({ ...createTodo, content: e.target.value });
+              }}
               placeholder="내용"
               style={{
                 resize: "none",
@@ -54,6 +86,7 @@ export default function Create() {
             />
           </div>
           <button
+            type="submit"
             style={{
               width: "100%",
               height: "40px",
