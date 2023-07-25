@@ -10,14 +10,20 @@ export default function Detail(props) {
 
   // props 로 넘겨받은 contents 배열에 filter 메소드를 사용하여 useParams로 받아온
   // content의 id와 동일한 요소만 필터링해준다.
-  const content = props.contents.filter((content) => content.id === id);
+  const item = props.items.filter((item) => item.id === id);
+
+  // item 삭제 이벤트
+  const itemDeleteHandler = () => {
+    const newItems = props.items.filter((item) => item.id !== id);
+    props.setItems(newItems);
+  };
 
   return (
     <>
       <Header />
       {/* filter링 된 요소를 map 함수로 펼쳐준다.
       이로써 클릭한 content의 요소만 detailpage에서 보여준다 */}
-      {content.map((item) => {
+      {item.map((item) => {
         return (
           <Container key={item.id}>
             <h1
@@ -65,6 +71,8 @@ export default function Detail(props) {
               <button
                 onClick={() => {
                   alert("삭제할까?");
+                  itemDeleteHandler();
+                  navigate("/");
                 }}
                 style={{
                   border: "none",
