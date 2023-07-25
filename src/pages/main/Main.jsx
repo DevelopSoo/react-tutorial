@@ -5,6 +5,7 @@ import Container from '../../common/Container';
 import uuid from 'react-uuid';
 import * as S from './Main.styled';
 import Button from '../../components/button/Button';
+import { useSelector } from 'react-redux';
 
 export default function Main() {
   /*
@@ -14,28 +15,10 @@ export default function Main() {
     - content - 내용입니다.
     - author - 작성자입니다.
   */
-  const initialState = [
-    {
-      id: uuid(),
-      title: '23-07-25',
-      content: '내용',
-      author: '김선익'
-    },
-    {
-      id: uuid(),
-      title: '23-07-24',
-      content: '내용',
-      author: '김선익'
-    },
-    {
-      id: uuid(),
-      title: '23-07-23',
-      content: '내용',
-      author: '김선익'
-    }
-  ];
 
-  const [todos, setTodos] = useState(initialState);
+  const todos = useSelector((state) => {
+    return state.todos;
+  });
 
   const navigate = useNavigate();
   return (
@@ -64,7 +47,8 @@ export default function Main() {
               <S.TodoItem key={item.id}>
                 <S.TodoItemContent
                   onClick={() => {
-                    navigate('/detail/1');
+                    // detail Page ID값 추가
+                    navigate(`/detail/${item.id}}`);
                   }}
                 >
                   {/* item.title에 접근해 제목을 출력합니다. */}
