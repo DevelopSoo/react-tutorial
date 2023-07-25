@@ -20,7 +20,10 @@ export default function Header() {
           cursor: "pointer",
         }}
       >
-        <FaHome />
+        {/* - 홈 로고 클릭 시 메인페이지(`/`)로 이동 */}
+        <Link to="/">
+          <FaHome />
+        </Link>
       </h1>
       <div
         style={{
