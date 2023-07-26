@@ -3,15 +3,16 @@ import { useNavigate } from "react-router-dom";
 import Header from "../common/Header";
 import Container from "../common/Container";
 
-export default function Main(props) {
+export default function Main({ items, setItems }) {
   const navigate = useNavigate();
 
   // item 삭제 이벤트
   const itemDeleteHandler = (id) => {
-    const newItems = props.items.filter((item) => item.id !== id);
-    props.setItems(newItems);
+    if (window.confirm("삭제할까??")) {
+      const newItems = items.filter((item) => item.id !== id);
+      setItems(newItems);
+    }
   };
-
   return (
     <>
       <Header />
@@ -43,7 +44,7 @@ export default function Main(props) {
         userState로 정의한 list 배열을 map함수로 펼쳐준다.
         list 배열의 요소(객체)의 데이터를 보여주고, 배열 내의 모든 요소에 해당 과정을 반복한다. 
         */}
-        {props.items.map((item) => (
+        {items.map((item) => (
           <div
             // map 내부에 고유의 key값 부여
             key={item.id}
@@ -108,9 +109,8 @@ export default function Main(props) {
                 </button>
                 <button
                   onClick={() => {
-                    alert("삭제할까?");
                     // 삭제할 item을 특정하기 위해 해당 버튼이 있는 item의 id를 보내준다.
-                    itemDeleteHandler(`${item.id}`);
+                    itemDeleteHandler(item.id);
                   }}
                   style={{
                     border: "none",

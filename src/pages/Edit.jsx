@@ -3,14 +3,16 @@ import Header from "../common/Header";
 import Container from "../common/Container";
 import { useNavigate, useParams } from "react-router-dom";
 
-export default function Edit(props) {
+export default function Edit({ items, setItems }) {
   const { id } = useParams();
   // useParmas로 url에 넣어준 id를 받아온다.
 
-  // props 로 넘겨받은 contents 배열에 filter 메소드를 사용하여 useParams로 받아온
-  // content의 id와 동일한 요소만 필터링해준다.
-  // content의 요소인 객체를 바로 활용하기 위해 [content]로 선언함.
-  const [item] = props.items.filter((item) => item.id === id);
+  // props 로 넘겨받은 contents 배열에서
+  // find 메서드를 사용하여 id값과 일치하는 요소만 가져온다.
+  const item = items.find((item) => {
+    return item.id === id;
+  });
+
   // title, content 수정을 위해 useState 선언
   const [title, setTitle] = useState(item.title);
   const [content, setContent] = useState(item.content);
@@ -26,7 +28,7 @@ export default function Edit(props) {
   };
 
   // 수정된 title, content 반영하기
-  const editedItems = props.items.map((item) =>
+  const editedItems = items.map((item) =>
     // 맵 함수로 돌면서 수정 페이지의 id에 해당하는 item의 요소는 title, content 수정
     // 다른 id의 item은 그대로 유지
     item.id === id ? { ...item, title: title, content: content } : item
@@ -46,7 +48,7 @@ export default function Edit(props) {
           onSubmit={(e) => {
             e.preventDefault();
             // 수정된 editeditems로 itmes 데이터를 업데이트
-            props.setItems(editedItems);
+            setItems(editedItems);
             navigate("/");
           }}
         >
@@ -54,6 +56,7 @@ export default function Edit(props) {
             <input
               type="text"
               defaultValue={title}
+              // value와 차이점 찾아보기
               style={{
                 width: "100%",
                 height: "60px",

@@ -4,10 +4,10 @@ import Container from "../common/Container";
 import { useNavigate } from "react-router-dom";
 import uuid from "react-uuid";
 
-export default function Create(props) {
+export default function Create({ items, setItems }) {
   // title, content 수정을 위해 useState 선언
-  const [title, setTitle] = useState();
-  const [content, setContent] = useState();
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
   const navigate = useNavigate();
 
   // input title, content 수정사항 반영하기
@@ -25,10 +25,10 @@ export default function Create(props) {
       id: uuid(),
       title,
       content,
-      author: `작성자${props.items.length + 1}`,
+      author: `작성자`,
     };
     // 기존 items를 전개연산자를 통해 분해하여 배열에 새로운 객체 추가
-    props.setItems([...props.items, newItem]);
+    setItems([...items, newItem]);
     // 추가 후 메인페이지로 이동
     navigate("/");
   };
@@ -46,12 +46,14 @@ export default function Create(props) {
           }}
           onSubmit={(e) => {
             e.preventDefault();
-            console.log("제출!");
+            itemAddHandler();
           }}
         >
           <div>
             <input
               placeholder="제목"
+              type="text"
+              // value=""
               style={{
                 width: "100%",
                 height: "60px",
@@ -74,6 +76,7 @@ export default function Create(props) {
           >
             <textarea
               placeholder="내용"
+              // value
               style={{
                 resize: "none",
                 height: "100%",
@@ -100,7 +103,6 @@ export default function Create(props) {
               backgroundColor: "skyblue",
               cursor: "pointer",
             }}
-            onClick={itemAddHandler}
           >
             추가하기
           </button>
