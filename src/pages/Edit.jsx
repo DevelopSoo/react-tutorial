@@ -29,13 +29,6 @@ export default function Edit({ posts, setPosts }) {
           onSubmit={(e) => {
             e.preventDefault();
             console.log("제출!");
-
-            // const editPost = {
-            //   title: editTitle,
-            //   content: editContent,
-            // };
-
-            // const editPost = [...posts, updatePost]; // 새롭게 데이터를 추가 하는게 아니라 기존의 것 안에 넣고 싶은 건데 .. 어떻게 해야 할까?
             // 요놈이 문제야. 내가 있는 페이지의 id값을 post.id와 비교해서 넣는 삼항연산자 때려.
             setPosts(
               posts.map((post) =>

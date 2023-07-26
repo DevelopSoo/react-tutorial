@@ -1,16 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../common/Header";
 import Container from "../common/Container";
 
-export default function Main({ posts, setPosts }) {
+export default function Main({ posts, onClickDeleteBtnHandler }) {
   // console.log(posts);
 
-  const onClickDeleteBtnHandler = (id) => {
-    alert("삭제할거양?");
-    const filterdPost = posts.filter((post) => post.id !== id);
-    setPosts(filterdPost);
-  };
   const navigate = useNavigate();
   return (
     <>

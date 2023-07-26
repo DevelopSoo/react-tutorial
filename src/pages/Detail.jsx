@@ -3,13 +3,14 @@ import Header from "../common/Header";
 import Container from "../common/Container";
 import { useNavigate, useParams } from "react-router-dom";
 
-export default function Detail({ posts, setPosts }) {
+export default function Detail({ posts, onClickDeleteBtnHandler }) {
   const navigate = useNavigate();
 
   // useParams를 이용해 url의 id를 가져온다.
   // useParams는 객체 형태로 데이터 값을 반환하며,
   // 객체 안의 id값만을 사용하려면 구조분해할당으로 뽑아낸다.
   const { id } = useParams();
+
   console.log(id);
   console.log(posts);
 
@@ -18,13 +19,6 @@ export default function Detail({ posts, setPosts }) {
 
   // 구조분해할당으로 필요한 데이터 뽑아내기
   const { title, content } = data;
-
-  const onClickDeleteBtnHandler = () => {
-    alert("삭제할거양?");
-    const filterdPost = posts.filter((post) => post.id !== id);
-    setPosts(filterdPost);
-    navigate("/");
-  };
 
   return (
     <>
@@ -74,7 +68,7 @@ export default function Detail({ posts, setPosts }) {
           </button>
           <button
             onClick={() => {
-              onClickDeleteBtnHandler();
+              onClickDeleteBtnHandler(id);
             }}
             style={{
               border: "none",

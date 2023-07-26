@@ -32,9 +32,6 @@ export default function Create({ posts, setPosts }) {
             const updatePost = [...posts, newPost];
             setPosts(updatePost);
 
-            // 제목, 내용 입력 필드 초기화
-            setTitle("");
-            setContent("");
             navigate("/");
           }}
         >
@@ -43,7 +40,6 @@ export default function Create({ posts, setPosts }) {
               placeholder="제목"
               value={title}
               onChange={(e) => {
-                // console.log("제목 :", e.target.value);
                 setTitle(e.target.value);
               }}
               style={{
@@ -66,7 +62,6 @@ export default function Create({ posts, setPosts }) {
               placeholder="내용"
               value={content}
               onChange={(e) => {
-                // console.log("내용 :", e.target.value);
                 setContent(e.target.value);
               }}
               style={{
