@@ -13,3 +13,9 @@ export const ContentLayout = styled.div`
   border-radius: 12px;
   padding: 12px;
 `;
+
+export const ButtonLayout = styled.div`
+  margin-top: 12px;
+  display: flex;
+  justify-content: end;
+`;

@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import Main from '../pages/main/Main';
 import Detail from '../pages/detail/Detail';
 import Create from '../pages/Create';
-import Edit from '../pages/Edit';
+import Edit from '../pages/edit/Edit';
 import Login from '../pages/Login';
 import Signup from '../pages/Signup';
 import uuid from 'react-uuid';
