@@ -4,6 +4,8 @@ import Container from "../common/Container";
 import { useNavigate, useParams } from "react-router-dom";
 
 export default function Detail({ posts, setPosts }) {
+  const navigate = useNavigate();
+
   // useParams를 이용해 url의 id를 가져온다.
   // useParams는 객체 형태로 데이터 값을 반환하며,
   // 객체 안의 id값만을 사용하려면 구조분해할당으로 뽑아낸다.
@@ -11,7 +13,7 @@ export default function Detail({ posts, setPosts }) {
   console.log(id);
   console.log(posts);
 
-  // items의 id값 === 현재 URL id값이 일치하는 데이터를 찾아낸다.
+  // post의 id값 === 현재 URL id값이 일치하는 데이터를 찾아낸다.
   const data = posts.find((post) => post.id === id);
 
   // 구조분해할당으로 필요한 데이터 뽑아내기
@@ -21,9 +23,9 @@ export default function Detail({ posts, setPosts }) {
     alert("삭제할거양?");
     const filterdPost = posts.filter((post) => post.id !== id);
     setPosts(filterdPost);
+    navigate("/");
   };
 
-  const navigate = useNavigate();
   return (
     <>
       <Header />
