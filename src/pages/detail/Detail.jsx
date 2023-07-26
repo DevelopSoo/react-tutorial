@@ -9,8 +9,6 @@ import * as S from './Detail.styled';
 export default function Detail({ todos, setTodos }) {
   //useParams를 사용해 URL에서 id 값을 추출합니다.
   const { id } = useParams();
-  //Redux Toolkit을 사용해 todos를 불러옵니다.
-  const todos = useSelector((state) => state.todos);
 
   const navigate = useNavigate();
 
