@@ -3,9 +3,9 @@ import Header from "../common/Header";
 import Container from "../common/Container";
 import { useNavigate, useParams } from "react-router-dom";
 
-export default function Detail({ memoData }) {
+export default function Detail({ memoData, setMemoData }) {
   const { id } = useParams();
-  const memo = memoData.find((memo) => memo.id === id);
+  const memo = memoData.find((memo) => memo.id === id); //숫자형 문자형 일치시켜야함
 
   const navigate = useNavigate();
   return (
@@ -54,7 +54,11 @@ export default function Detail({ memoData }) {
           </button>
           <button
             onClick={() => {
-              alert("삭제할까?");
+              if (window.confirm("진짜 삭제할까요?")) {
+                const newMemoData = memoData.filter((m) => m.id !== memo.id);
+                setMemoData(newMemoData);
+                navigate("/");
+              }
             }}
             style={{
               border: "none",

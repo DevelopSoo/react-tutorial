@@ -1,6 +1,7 @@
 import React from "react";
 import Header from "../common/Header";
 import Container from "../common/Container";
+import { Link } from "react-router-dom";
 
 export default function Signup() {
   return (
@@ -100,19 +101,22 @@ export default function Signup() {
                 width: "360px",
               }}
             >
-              <button
-                style={{
-                  width: "100%",
-                  border: "none",
-                  padding: "12px",
-                  borderRadius: "6px",
-                  backgroundColor: "#78C1F3",
-                  color: "white",
-                  cursor: "pointer",
-                }}
-              >
-                로그인하러 가기
-              </button>
+              {" "}
+              <Link to="/login">
+                <button
+                  style={{
+                    width: "100%",
+                    border: "none",
+                    padding: "12px",
+                    borderRadius: "6px",
+                    backgroundColor: "#78C1F3",
+                    color: "white",
+                    cursor: "pointer",
+                  }}
+                >
+                  로그인하러 가기
+                </button>
+              </Link>
             </div>
           </form>
         </div>

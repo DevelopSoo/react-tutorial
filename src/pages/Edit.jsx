@@ -1,8 +1,19 @@
 import React, { Fragment } from "react";
 import Header from "../common/Header";
 import Container from "../common/Container";
+import { useParams } from "react-router-dom";
+import uuid from "react-uuid";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function Edit() {
+export default function Edit({ memoData, setMemoData }) {
+  const { id } = useParams();
+  const memo = memoData.find((memo) => memo.id === id); //숫자형 문자형 일치시켜야함
+
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+
+  const navigate = useNavigate();
   return (
     <Fragment>
       <Header />
@@ -16,7 +27,19 @@ export default function Edit() {
           }}
           onSubmit={(e) => {
             e.preventDefault();
-            console.log("제출!");
+            const updatedMemoData = memoData.map((memo) => {
+              if (memo.id === id) {
+                return {
+                  ...memo,
+                  title: title,
+                  content: content,
+                };
+              }
+              return memo;
+            });
+
+            setMemoData(updatedMemoData); //상위에서 프롭스로 전달하기
+            navigate("/");
           }}
         >
           <div>
@@ -30,6 +53,10 @@ export default function Edit() {
                 border: "1px solid lightgrey",
                 padding: "8px",
                 boxSizing: "border-box",
+              }}
+              value={title}
+              onChange={(e) => {
+                setTitle(e.target.value);
               }}
             />
           </div>
@@ -49,6 +76,10 @@ export default function Edit() {
                 border: "1px solid lightgrey",
                 padding: "12px",
                 boxSizing: "border-box",
+              }}
+              value={content}
+              onChange={(e) => {
+                setContent(e.target.value);
               }}
             />
           </div>
