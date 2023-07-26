@@ -13,6 +13,19 @@ export default function Detail({ todos, setTodos }) {
   // todos id와 params id 값을 비교해서 일치하는 첫번째 항목을 가져옵니다.
   const filteredTodo = todos.find((todo) => todo.id === id);
 
+  const deleteHandler = (itemId) => {
+    alert('삭제할까?');
+
+    if (!window.confirm) {
+      return;
+    } else {
+      // todos의 데이터에서 클릭한 요소를 찾아 삭제하는 코드
+      const newTodos = todos.filter((todo) => todo.id !== itemId);
+      setTodos(newTodos);
+      navigate('/');
+    }
+  };
+
   if (!filteredTodo) {
     return <div>No todo found with the provided id</div>;
   }
@@ -32,7 +45,7 @@ export default function Detail({ todos, setTodos }) {
             variant="solid"
             color="orange"
             onClick={() => {
-              navigate('/edit');
+              navigate(`/edit/${filteredTodo.id}`);
               setTodos();
             }}
           >
@@ -42,7 +55,7 @@ export default function Detail({ todos, setTodos }) {
             variant="solid"
             color="red"
             onClick={() => {
-              alert('삭제할까?');
+              deleteHandler(filteredTodo.id);
             }}
           >
             삭제

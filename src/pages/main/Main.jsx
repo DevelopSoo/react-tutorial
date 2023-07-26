@@ -5,7 +5,7 @@ import Container from '../../common/Container';
 import * as S from './Main.styled';
 import Button from '../../components/button/Button';
 
-export default function Main({ todos }) {
+export default function Main({ todos, setTodos }) {
   /*
   게시물 데이터엔 다음과 같은 데이터가 존재해야 합니다.
     - id - 고유한 아이디여야 합니다
@@ -13,6 +13,18 @@ export default function Main({ todos }) {
     - content - 내용입니다.
     - author - 작성자입니다.
   */
+
+  const deleteHandler = (item) => {
+    alert('삭제할까?');
+
+    if (!window.confirm) {
+      return;
+    }
+
+    // todos의 데이터에서 클릭한 요소를 찾아 삭제하는 코드
+    const newTodos = todos.filter((todo) => todo.id !== item.id);
+    setTodos(newTodos);
+  };
 
   const navigate = useNavigate();
   return (
@@ -67,7 +79,7 @@ export default function Main({ todos }) {
                       variant="solid"
                       color="red"
                       onClick={() => {
-                        alert('삭제할까?');
+                        deleteHandler(item);
                       }}
                     >
                       삭제
