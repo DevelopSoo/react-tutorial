@@ -1,10 +1,12 @@
-import React from "react";
 import Header from "../common/Header";
 import Container from "../common/Container";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
-export default function Detail() {
+export default function Detail({ posts, setPosts }) {
+  const { id } = useParams();
   const navigate = useNavigate();
+  const post = posts.find((post) => post.id === id);
+
   return (
     <>
       <Header />
@@ -16,7 +18,7 @@ export default function Detail() {
             padding: "12px",
           }}
         >
-          제목
+          {post?.title}
         </h1>
         <div
           style={{
@@ -26,10 +28,7 @@ export default function Detail() {
             padding: "12px",
           }}
         >
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad doloribus
-          blanditiis vitae sapiente. Expedita delectus nihil animi pariatur,
-          labore quod officiis dolor fugit. Mollitia quod, delectus velit
-          deleniti nihil veniam!
+          {post?.content}
         </div>
         <div
           style={{
@@ -40,7 +39,11 @@ export default function Detail() {
         >
           <button
             onClick={() => {
-              navigate("/edit");
+              navigate("/edit", {
+                state: {
+                  post,
+                },
+              });
             }}
             style={{
               border: "none",
@@ -56,7 +59,11 @@ export default function Detail() {
           </button>
           <button
             onClick={() => {
-              alert("삭제할까?");
+              const result = window.confirm("정말로 삭제하시겠습니까?");
+              if (result) {
+                setPosts((prev) => prev.filter((p) => p.id !== post.id));
+                navigate("/");
+              }
             }}
             style={{
               border: "none",

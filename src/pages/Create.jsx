@@ -1,9 +1,21 @@
-import React from "react";
-
 import Header from "../common/Header";
 import Container from "../common/Container";
+import { useState } from "react";
+import { nanoid } from "nanoid";
+import { useNavigate } from "react-router-dom";
 
-export default function Create() {
+export default function Create({ setPosts }) {
+  const [inputs, setInputs] = useState({
+    title: "",
+    content: "",
+  });
+  const navigate = useNavigate();
+  const onChangeHandler = (e) => {
+    setInputs((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
   return (
     <>
       <Header />
@@ -17,11 +29,22 @@ export default function Create() {
           }}
           onSubmit={(e) => {
             e.preventDefault();
-            console.log("제출!");
+            setPosts((prev) => {
+              return [
+                ...prev,
+                {
+                  id: nanoid(),
+                  author: "병수",
+                  ...inputs,
+                },
+              ];
+            });
+            navigate("/");
           }}
         >
           <div>
             <input
+              name="title"
               placeholder="제목"
               style={{
                 width: "100%",
@@ -32,6 +55,8 @@ export default function Create() {
                 padding: "8px",
                 boxSizing: "border-box",
               }}
+              value={inputs.title}
+              onChange={onChangeHandler}
             />
           </div>
           <div
@@ -40,6 +65,7 @@ export default function Create() {
             }}
           >
             <textarea
+              name="content"
               placeholder="내용"
               style={{
                 resize: "none",
@@ -51,6 +77,8 @@ export default function Create() {
                 padding: "12px",
                 boxSizing: "border-box",
               }}
+              value={inputs.content}
+              onChange={onChangeHandler}
             />
           </div>
           <button
