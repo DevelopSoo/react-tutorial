@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 import Header from "../common/Header";
 import Container from "../common/Container";
 import { nanoid } from "@reduxjs/toolkit";
@@ -7,6 +7,7 @@ import { nanoid } from "@reduxjs/toolkit";
 export default function Create({ posts, setPosts }) {
   const [title, setTitle] = useState(""); // 제목 상태 관리
   const [content, setContent] = useState(""); // 내용 상태 관리
+  const navigate = useNavigate();
 
   return (
     <>
@@ -34,6 +35,7 @@ export default function Create({ posts, setPosts }) {
             // 제목, 내용 입력 필드 초기화
             setTitle("");
             setContent("");
+            navigate("/");
           }}
         >
           <div>

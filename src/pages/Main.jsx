@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../common/Header";
 import Container from "../common/Container";
 
-export default function Main({ posts }) {
+export default function Main({ posts, setPosts }) {
   // console.log(posts);
 
+  const onClickDeleteBtnHandler = (id) => {
+    alert("삭제할거양?");
+    const filterdPost = posts.filter((post) => post.id !== id);
+    setPosts(filterdPost);
+  };
   const navigate = useNavigate();
   return (
     <>
@@ -102,7 +107,7 @@ export default function Main({ posts }) {
                 </button>
                 <button
                   onClick={() => {
-                    alert("삭제할까?");
+                    onClickDeleteBtnHandler(post.id);
                   }}
                   style={{
                     border: "none",
