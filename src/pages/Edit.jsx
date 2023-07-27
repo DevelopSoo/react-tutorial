@@ -33,6 +33,13 @@ export default function Edit() {
     setContent(e.target.value);
   };
 
+  const itemEditHandler = () => {
+    // useDispatch로 변경함수 사용하기
+    // action.payload 객체로 변경된 title, content, id 보내주기
+    dispatch(editItem({ title, content, id }));
+    navigate("/");
+  };
+
   return (
     <Fragment>
       <Header />
@@ -46,10 +53,7 @@ export default function Edit() {
           }}
           onSubmit={(e) => {
             e.preventDefault();
-            // useDispatch로 변경함수 사용하기
-            // action.payload 객체로 변경된 title, content, id 보내주기
-            dispatch(editItem({ title, content, id }));
-            navigate("/");
+            itemEditHandler();
           }}
         >
           <div>

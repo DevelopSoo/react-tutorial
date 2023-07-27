@@ -25,7 +25,6 @@ export default function Create() {
     // useDispatch로 변경함수 사용하기
     // action.payload로 입력된 title, content 객체 보내주기
     dispatch(addItem({ title, content }));
-
     // 추가 후 메인페이지로 이동
     navigate("/");
   };
