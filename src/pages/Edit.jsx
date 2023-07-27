@@ -55,8 +55,8 @@ export default function Edit({ items, setItems }) {
           <div>
             <input
               type="text"
-              defaultValue={title}
-              // value와 차이점 찾아보기
+              // defaultValue={title}
+              value={title}
               style={{
                 width: "100%",
                 height: "60px",
@@ -79,7 +79,7 @@ export default function Edit({ items, setItems }) {
           >
             <textarea
               type="text"
-              defaultValue={content}
+              value={content}
               style={{
                 resize: "none",
                 height: "100%",
