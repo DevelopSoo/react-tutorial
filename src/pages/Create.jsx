@@ -1,72 +1,55 @@
-import React from "react";
-
+import React, { useState } from "react";
+import * as St from "../style/CreateStyled";
 import Header from "../common/Header";
 import Container from "../common/Container";
-
+import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
+import { addItem } from "../index";
+import { nanoid } from "nanoid";
 export default function Create() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+
+  const handleAddItem = (e) => {
+    e.preventDefault();
+
+    const newItem = {
+      id: nanoid(),
+      title,
+      content,
+    };
+
+    dispatch(addItem(newItem));
+    setTitle(``);
+    setContent(``);
+
+    navigate("/");
+  };
+
   return (
     <>
       <Header />
       <Container>
-        <form
-          style={{
-            height: "600px",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-evenly",
-          }}
-          onSubmit={(e) => {
-            e.preventDefault();
-            console.log("제출!");
-          }}
-        >
+        <St.CreateForm1 onSubmit={handleAddItem}>
           <div>
-            <input
+            <St.CreateInput1
               placeholder="제목"
-              style={{
-                width: "100%",
-                height: "60px",
-                fontSize: "18px",
-                borderRadius: "12px",
-                border: "1px solid lightgrey",
-                padding: "8px",
-                boxSizing: "border-box",
-              }}
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
             />
           </div>
-          <div
-            style={{
-              height: "400px",
-            }}
-          >
-            <textarea
+          <St.CreateDiv1>
+            <St.CreateText1
               placeholder="내용"
-              style={{
-                resize: "none",
-                height: "100%",
-                width: "100%",
-                fontSize: "18px",
-                borderRadius: "12px",
-                border: "1px solid lightgrey",
-                padding: "12px",
-                boxSizing: "border-box",
-              }}
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
             />
-          </div>
-          <button
-            style={{
-              width: "100%",
-              height: "40px",
-              border: "none",
-              color: "white",
-              borderRadius: "12px",
-              backgroundColor: "skyblue",
-              cursor: "pointer",
-            }}
-          >
-            추가하기
-          </button>
-        </form>
+          </St.CreateDiv1>
+          <St.CreateBtn1 type="submit">추가하기</St.CreateBtn1>
+        </St.CreateForm1>
       </Container>
     </>
   );

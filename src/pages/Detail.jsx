@@ -1,75 +1,50 @@
 import React from "react";
+import { useParams } from "react-router-dom/dist";
 import Header from "../common/Header";
 import Container from "../common/Container";
 import { useNavigate } from "react-router-dom";
+import * as St from "../css/DetailStyled";
+import { useSelector } from "react-redux/es/hooks/useSelector";
+import { useDispatch } from "react-redux";
+import { deleteItem } from "../index";
 
 export default function Detail() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const lists = useSelector((state) => state.contents);
+  const { id } = useParams();
+  const list = lists.find((lists) => lists.id === id);
+
+  const handleDeleteItem = (id) => {
+    const confirmDelete = window.confirm("삭제하시겠습니까?");
+    if (confirmDelete) {
+      dispatch(deleteItem(id));
+      navigate("/");
+    }
+  };
+
   return (
     <>
       <Header />
       <Container>
-        <h1
-          style={{
-            border: "1px solid lightgray",
-            borderRadius: "12px",
-            padding: "12px",
-          }}
-        >
-          제목
-        </h1>
-        <div
-          style={{
-            height: "400px",
-            border: "1px solid lightgray",
-            borderRadius: "12px",
-            padding: "12px",
-          }}
-        >
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad doloribus
-          blanditiis vitae sapiente. Expedita delectus nihil animi pariatur,
-          labore quod officiis dolor fugit. Mollitia quod, delectus velit
-          deleniti nihil veniam!
-        </div>
-        <div
-          style={{
-            marginTop: "12px",
-            display: "flex",
-            justifyContent: "end",
-          }}
-        >
-          <button
+        <St.DetailH1>{list.title}</St.DetailH1>
+        <St.DetailDiv1>{list.content}</St.DetailDiv1>
+        <St.DetailDiv2>
+          <St.DetailBtn1
             onClick={() => {
-              navigate("/edit");
-            }}
-            style={{
-              border: "none",
-              padding: "8px",
-              borderRadius: "6px",
-              backgroundColor: "orange",
-              color: "white",
-              cursor: "pointer",
-              marginRight: "6px",
+              navigate("/edit/" + list.id);
             }}
           >
             수정
-          </button>
-          <button
+          </St.DetailBtn1>
+          <St.DetailBtn2
             onClick={() => {
-              alert("삭제할까?");
-            }}
-            style={{
-              border: "none",
-              padding: "8px",
-              borderRadius: "6px",
-              backgroundColor: "red",
-              color: "white",
-              cursor: "pointer",
+              handleDeleteItem(list.id);
             }}
           >
             삭제
-          </button>
-        </div>
+          </St.DetailBtn2>
+        </St.DetailDiv2>
       </Container>
     </>
   );
