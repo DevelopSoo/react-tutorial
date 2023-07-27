@@ -15,6 +15,8 @@ export default function Main() {
   // item 삭제 이벤트
   const itemDeleteHandler = (id) => {
     if (window.confirm("삭제할까??")) {
+      // useDispatch로 변경함수 사용하기
+      // action.payload로 id 보내주기
       dispatch(deleteItem(id));
     }
   };

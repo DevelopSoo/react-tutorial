@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Header from "../common/Header";
 import Container from "../common/Container";
 import { useNavigate } from "react-router-dom";
-import uuid from "react-uuid";
 import { useDispatch } from "react-redux";
 import { addItem } from "../redux/config/configureStore";
 
@@ -23,16 +22,9 @@ export default function Create() {
   };
 
   const itemAddHandler = () => {
-    // 입력된 title, content를 포함한 새로운 객체 생성
-    const newItem = {
-      id: uuid(),
-      title,
-      content,
-      author: `작성자`,
-    };
     // useDispatch로 변경함수 사용하기
-    // action.payload로 newItem 보내주기
-    dispatch(addItem(newItem));
+    // action.payload로 입력된 title, content 객체 보내주기
+    dispatch(addItem({ title, content }));
 
     // 추가 후 메인페이지로 이동
     navigate("/");

@@ -2,7 +2,8 @@ import React, { Fragment, useState } from "react";
 import Header from "../common/Header";
 import Container from "../common/Container";
 import { useNavigate, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { editItem } from "../redux/config/configureStore";
 
 export default function Edit() {
   const { id } = useParams();
@@ -21,6 +22,7 @@ export default function Edit() {
   const [title, setTitle] = useState(item.title);
   const [content, setContent] = useState(item.content);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // input title, content 수정사항 반영하기
   const titleChangeHandler = (e) => {
@@ -30,13 +32,6 @@ export default function Edit() {
   const contentChangeHandler = (e) => {
     setContent(e.target.value);
   };
-
-  // 수정된 title, content 반영하기
-  const editedItems = items.map((item) =>
-    // 맵 함수로 돌면서 수정 페이지의 id에 해당하는 item의 요소는 title, content 수정
-    // 다른 id의 item은 그대로 유지
-    item.id === id ? { ...item, title: title, content: content } : item
-  );
 
   return (
     <Fragment>
@@ -51,8 +46,9 @@ export default function Edit() {
           }}
           onSubmit={(e) => {
             e.preventDefault();
-            // 수정된 editeditems로 itmes 데이터를 업데이트
-            // setItems(editedItems);
+            // useDispatch로 변경함수 사용하기
+            // action.payload 객체로 변경된 title, content, id 보내주기
+            dispatch(editItem({ title, content, id }));
             navigate("/");
           }}
         >

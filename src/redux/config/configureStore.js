@@ -31,14 +31,35 @@ let items = createSlice({
   reducers: {
     // 4. reducer 안에 변경함수 만들기
     addItem: (state, action) => {
-      // action.payload = newItem
-      return [...state, action.payload];
+      // action.payload = {title, content}
+      const newItem = {
+        id: uuid(),
+        title: action.payload.title,
+        content: action.payload.content,
+        author: `작성자`,
+      };
+      return [...state, newItem];
     },
+
     deleteItem: (state, action) => {
+      // action.payload = id
       const newItems = state.filter((item) => item.id !== action.payload);
       return newItems;
     },
-    editItem: (state) => {},
+
+    editItem: (state, action) => {
+      // action.payload = {title, content, id}
+      const editedItems = state.map((item) =>
+        item.id === action.payload.id
+          ? {
+              ...item,
+              title: action.payload.title,
+              content: action.payload.content,
+            }
+          : item
+      );
+      return editedItems;
+    },
   },
 });
 
