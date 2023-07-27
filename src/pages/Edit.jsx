@@ -4,17 +4,24 @@ import Container from "../common/Container";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { editTodo } from "../slices/todosSlice";
+export default function Edit() {
+  const todos = useSelector((state) => state.할일들); // slice의 상태를 가져옴
+  console.log(todos);
+  const dispatch = useDispatch();
 
-export default function Edit({ todos, setTodos }) {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  const 할일업뎃 = todos.find((item) => item.id === id);
+
   const [editedTodo, setEditedTodo] = useState({
-    title: todos.title,
-    content: todos.content,
+    title: 할일업뎃 ? 할일업뎃.title : "",
+    content: 할일업뎃 ? 할일업뎃.content : "",
   });
-  const 할일업뎃 = todos.filter((item) => item.id === id);
-  if (할일업뎃.length === 0) {
+
+  if (!할일업뎃) {
     // id에 해당하는 할일이 없는 경우에 대한 처리
     return (
       <>
@@ -28,94 +35,85 @@ export default function Edit({ todos, setTodos }) {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    const updatedTodos = todos.map((todo) => {
-      if (todo.id === id) {
-        return {
-          ...todo,
-          title: editedTodo.title,
-          content: editedTodo.content,
-        };
-      } else {
-        return todo;
-      }
-    });
-    setTodos(updatedTodos);
+    const updatedTodos = {
+      ...할일업뎃,
+      title: editedTodo.title,
+      content: editedTodo.content,
+    };
+
+    dispatch(editTodo(updatedTodos)); // editTodo 액션 디스패치하여 Redux store의 상태 업데이트
     navigate("/");
   };
 
   return (
     <Fragment>
       <Header />
-      {할일업뎃.map((할일1) => (
-        <Container key={할일1.id}>
-          <form
-            style={{
-              height: "600px",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-evenly",
-            }}
-            onSubmit={submitHandler}
-          >
-            <div>
-              <input
-                value={editedTodo.title}
-                onChange={(e) => {
-                  setEditedTodo({ ...editedTodo, title: e.target.value });
-                }}
-                placeholder={할일1.title}
-                style={{
-                  width: "100%",
-                  height: "60px",
-                  fontSize: "18px",
-                  borderRadius: "12px",
-                  border: "1px solid lightgrey",
-                  padding: "8px",
-                  boxSizing: "border-box",
-                }}
-              />
-            </div>
-            <div
-              style={{
-                height: "400px",
+
+      <Container>
+        <form
+          style={{
+            height: "600px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-evenly",
+          }}
+          onSubmit={submitHandler}
+        >
+          <div>
+            <input
+              value={editedTodo.title}
+              onChange={(e) => {
+                setEditedTodo({ ...editedTodo, title: e.target.value });
               }}
-            >
-              <textarea
-                value={editedTodo.content}
-                onChange={(e) =>
-                  setEditedTodo({ ...editedTodo, content: e.target.value })
-                }
-                //근데 이게 플레이스홀더에 있으면 뭔의미..? 사라져버리는데..?
-                placeholder={할일1.content}
-                style={{
-                  resize: "none",
-                  height: "100%",
-                  width: "100%",
-                  fontSize: "18px",
-                  borderRadius: "12px",
-                  border: "1px solid lightgrey",
-                  padding: "12px",
-                  boxSizing: "border-box",
-                }}
-              />
-            </div>
-            <button
-              type="submit"
               style={{
                 width: "100%",
-                height: "40px",
-                border: "none",
-                color: "white",
+                height: "60px",
+                fontSize: "18px",
                 borderRadius: "12px",
-                backgroundColor: "orange",
-                cursor: "pointer",
+                border: "1px solid lightgrey",
+                padding: "8px",
+                boxSizing: "border-box",
               }}
-            >
-              수정하기
-            </button>
-          </form>
-        </Container>
-      ))}
+            />
+          </div>
+          <div
+            style={{
+              height: "400px",
+            }}
+          >
+            <textarea
+              value={editedTodo.content}
+              onChange={(e) =>
+                setEditedTodo({ ...editedTodo, content: e.target.value })
+              }
+              style={{
+                resize: "none",
+                height: "100%",
+                width: "100%",
+                fontSize: "18px",
+                borderRadius: "12px",
+                border: "1px solid lightgrey",
+                padding: "12px",
+                boxSizing: "border-box",
+              }}
+            />
+          </div>
+          <button
+            type="submit"
+            style={{
+              width: "100%",
+              height: "40px",
+              border: "none",
+              color: "white",
+              borderRadius: "12px",
+              backgroundColor: "orange",
+              cursor: "pointer",
+            }}
+          >
+            수정하기
+          </button>
+        </form>
+      </Container>
     </Fragment>
   );
 }

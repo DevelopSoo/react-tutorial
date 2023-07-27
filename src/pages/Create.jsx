@@ -5,28 +5,32 @@ import Container from "../common/Container";
 import { nanoid } from "nanoid";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { addTodo } from "../slices/todosSlice"; // addRemoveSlice에서 removeTodo 액션을 가져옴
+export default function Create() {
+  const todos = useSelector((state) => state.할일들); // slice의 상태를 가져옴
+  const dispatch = useDispatch();
 
-export default function Create({ todos, setTodos }) {
   const navigate = useNavigate();
   //새로 추가한 거 담을 상자
   const [createTodo, setCreateTodo] = useState({
     title: "",
     content: "",
+    author: "",
   });
   const submitHandler = (e) => {
     e.preventDefault();
     //새로운 할일 객체 생성
     const newTodo = {
       id: nanoid(),
-      title: createTodo.title,
-      content: createTodo.content,
+      ...createTodo,
     };
     //기존 할일에 새로운 할일 추가
-    setTodos([...todos, newTodo]);
+    dispatch(addTodo(newTodo)); // addTodo 액션 디스패치하여 Redux store의 상태 업데이트
+
     //다 입력 후 값 비워줌
     setCreateTodo({
-      title: "",
-      content: "",
+      addTodo: "",
     });
     navigate("/");
   };

@@ -1,14 +1,19 @@
-import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../common/Header";
 import Container from "../common/Container";
+import { useSelector, useDispatch } from "react-redux";
+import { removeTodo } from "../slices/todosSlice";
 
-export default function Main({ todos, setTodos }) {
+export default function Main() {
   const navigate = useNavigate();
-  console.log({ todos });
-  const [newTodo, setNewTodo] = useState("");
-  const id매칭 = todos.filter((item) => item.id === "id");
+  const todos = useSelector((state) => state.할일들); // slice의 상태를 가져옴
+  const dispatch = useDispatch();
 
+  const handleRemoveTodo = (id) => {
+    if (window.confirm("삭제할까?")) {
+      dispatch(removeTodo(id)); // removeTodo 액션 디스패치하여 Redux store의 상태 업데이트
+    }
+  };
   return (
     <>
       <Header />
@@ -52,8 +57,6 @@ export default function Main({ todos, setTodos }) {
               <div
                 onClick={() => {
                   navigate(`/detail/${할일.id}`);
-                  {
-                  }
                 }}
                 style={{
                   flex: 4,
@@ -103,11 +106,7 @@ export default function Main({ todos, setTodos }) {
                   </button>
                   <button
                     onClick={() => {
-                      alert("삭제할까?");
-                      const 삭제후새로운배열 = todos.filter((todo) => {
-                        return todo.id !== 할일.id;
-                      });
-                      setTodos(삭제후새로운배열);
+                      handleRemoveTodo(할일.id); // 삭제 버튼을 누를 때 handleRemoveTodo 함수 호출}});
                     }}
                     style={{
                       border: "none",
