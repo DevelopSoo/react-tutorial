@@ -3,8 +3,11 @@ import { useNavigate } from "react-router-dom";
 import Header from "../common/Header";
 import Container from "../common/Container";
 import { nanoid } from "@reduxjs/toolkit";
+import { useDispatch } from "react-redux";
+import { addPost } from "../redux/modules/posts";
 
-export default function Create({ posts, setPosts }) {
+export default function Create() {
+  const dispatch = useDispatch();
   const [title, setTitle] = useState(""); // 제목 상태 관리
   const [content, setContent] = useState(""); // 내용 상태 관리
   const navigate = useNavigate();
@@ -29,8 +32,8 @@ export default function Create({ posts, setPosts }) {
               content: content,
               author: "호떡",
             };
-            const updatePost = [...posts, newPost];
-            setPosts(updatePost);
+
+            dispatch(addPost(newPost));
 
             navigate("/");
           }}

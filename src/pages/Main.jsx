@@ -2,10 +2,10 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../common/Header";
 import Container from "../common/Container";
+import { useSelector } from "react-redux";
 
-export default function Main({ posts, onClickDeleteBtnHandler }) {
-  // console.log(posts);
-
+export default function Main() {
+  const posts = useSelector((state) => state.posts);
   const navigate = useNavigate();
   return (
     <>
@@ -101,9 +101,6 @@ export default function Main({ posts, onClickDeleteBtnHandler }) {
                   수정
                 </button>
                 <button
-                  onClick={() => {
-                    onClickDeleteBtnHandler(post.id);
-                  }}
                   style={{
                     border: "none",
                     padding: "8px",
