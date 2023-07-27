@@ -2,11 +2,17 @@ import React from "react";
 import Header from "../common/Header";
 import Container from "../common/Container";
 import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteItem } from "../redux/config/configureStore";
 
-export default function Detail({ items, setItems }) {
+export default function Detail() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { id } = useParams();
   // useParmas로 url에 넣어준 id를 받아온다.
+
+  // 데이터 가져오기
+  const items = useSelector((state) => state.Items);
 
   // props 로 넘겨받은 contents 배열에서
   // find 메서드를 사용하여 id값과 일치하는 요소만 가져온다.
@@ -17,8 +23,7 @@ export default function Detail({ items, setItems }) {
   // item 삭제 이벤트
   const itemDeleteHandler = () => {
     if (window.confirm("삭제할까??")) {
-      const newItems = items.filter((item) => item.id !== id);
-      setItems(newItems);
+      dispatch(deleteItem(id));
       navigate("/");
     }
   };

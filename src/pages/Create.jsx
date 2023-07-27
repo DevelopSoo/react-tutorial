@@ -3,12 +3,15 @@ import Header from "../common/Header";
 import Container from "../common/Container";
 import { useNavigate } from "react-router-dom";
 import uuid from "react-uuid";
+import { useDispatch } from "react-redux";
+import { addItem } from "../redux/config/configureStore";
 
-export default function Create({ items, setItems }) {
+export default function Create() {
   // title, content 수정을 위해 useState 선언
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // input title, content 수정사항 반영하기
   const titleChangeHandler = (e) => {
@@ -27,8 +30,10 @@ export default function Create({ items, setItems }) {
       content,
       author: `작성자`,
     };
-    // 기존 items를 전개연산자를 통해 분해하여 배열에 새로운 객체 추가
-    setItems([...items, newItem]);
+    // useDispatch로 변경함수 사용하기
+    // action.payload로 newItem 보내주기
+    dispatch(addItem(newItem));
+
     // 추가 후 메인페이지로 이동
     navigate("/");
   };

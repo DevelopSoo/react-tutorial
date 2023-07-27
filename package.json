@@ -46,5 +46,9 @@
   "main": "index.js",
   "repository": "git@github.com:yoongun97/react-tutorial.git",
   "author": "Cho Yoongeon <tesung5470@naver.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "4.0.1",
+    "@typescript-eslint/parser": "4.0.1"
+  }
 }

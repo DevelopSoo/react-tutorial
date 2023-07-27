@@ -1,14 +1,6 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit";
 import uuid from "react-uuid";
 
-// 데이터 중앙 저장소 만들기
-const store = configureStore({
-  reducer: {
-    // 2. 다른 곳에서 사용할 수 있게 configureStore에 넣어주기
-    Items: items.reducer,
-  },
-});
-
 // useState의 초기값 정의
 const initialItems = [
   {
@@ -35,6 +27,28 @@ const initialItems = [
 let items = createSlice({
   name: "Items",
   initialState: initialItems,
+  // 3. reducers 추가
+  reducers: {
+    // 4. reducer 안에 변경함수 만들기
+    addItem: (state, action) => {
+      // action.payload = newItem
+      return [...state, action.payload];
+    },
+    deleteItem: (state, action) => {
+      const newItems = state.filter((item) => item.id !== action.payload);
+      return newItems;
+    },
+    editItem: (state) => {},
+  },
+});
+
+// 데이터 중앙 저장소 만들기
+const store = configureStore({
+  reducer: {
+    // 2. 다른 곳에서 사용할 수 있게 configureStore에 넣어주기
+    Items: items.reducer,
+  },
 });
 
 export default store;
+export const { addItem, deleteItem, editItem } = items.actions;

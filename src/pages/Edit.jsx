@@ -2,10 +2,14 @@ import React, { Fragment, useState } from "react";
 import Header from "../common/Header";
 import Container from "../common/Container";
 import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-export default function Edit({ items, setItems }) {
+export default function Edit() {
   const { id } = useParams();
   // useParmas로 url에 넣어준 id를 받아온다.
+
+  // 데이터 가져오기
+  const items = useSelector((state) => state.Items);
 
   // props 로 넘겨받은 contents 배열에서
   // find 메서드를 사용하여 id값과 일치하는 요소만 가져온다.
@@ -48,7 +52,7 @@ export default function Edit({ items, setItems }) {
           onSubmit={(e) => {
             e.preventDefault();
             // 수정된 editeditems로 itmes 데이터를 업데이트
-            setItems(editedItems);
+            // setItems(editedItems);
             navigate("/");
           }}
         >

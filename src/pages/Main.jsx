@@ -2,15 +2,20 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../common/Header";
 import Container from "../common/Container";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteItem } from "../redux/config/configureStore";
 
-export default function Main({ items, setItems }) {
+export default function Main() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  // 데이터 가져오기
+  const items = useSelector((state) => state.Items);
 
   // item 삭제 이벤트
   const itemDeleteHandler = (id) => {
     if (window.confirm("삭제할까??")) {
-      const newItems = items.filter((item) => item.id !== id);
-      setItems(newItems);
+      dispatch(deleteItem(id));
     }
   };
   return (
