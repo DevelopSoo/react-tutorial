@@ -1,18 +1,17 @@
 import React, { Fragment, useState } from "react";
 import Header from "../common/Header";
 import Container from "../common/Container";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 
 export default function Edit({ posts, setPosts }) {
   const { id } = useParams();
+  const { state } = useLocation();
   // console.log(id);
   // console.log(posts);
-  const data = posts.find((post) => post.id === id);
-  const { title, content } = data;
 
   // 기존 글을 불러오려면 useState(초기값)안에 기존 데이터값을 넣으면 된다!!
-  const [editTitle, setEditTilte] = useState(title); // 변경된 제목 상태 관리
-  const [editContent, setEditContent] = useState(content); // 변경된 내용 상태 관리
+  const [editTitle, setEditTilte] = useState(state?.data.title || ""); // 변경된 제목 상태 관리
+  const [editContent, setEditContent] = useState(state?.data.content || ""); // 변경된 내용 상태 관리
   const navigate = useNavigate();
 
   return (
@@ -29,7 +28,7 @@ export default function Edit({ posts, setPosts }) {
           onSubmit={(e) => {
             e.preventDefault();
             console.log("제출!");
-            // 요놈이 문제야. 내가 있는 페이지의 id값을 post.id와 비교해서 넣는 삼항연산자 때려.
+
             setPosts(
               posts.map((post) =>
                 post.id === id

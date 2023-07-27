@@ -70,7 +70,7 @@ function App() {
         element={<Create posts={posts} setPosts={setPosts} />}
       />
       <Route
-        path="/edit/:id"
+        path="/edit"
         element={<Edit posts={posts} setPosts={setPosts} />}
       />
       <Route path="/signup" element={<Signup />} />

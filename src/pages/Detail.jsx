@@ -52,7 +52,7 @@ export default function Detail({ posts, onClickDeleteBtnHandler }) {
         >
           <button
             onClick={() => {
-              navigate(`/edit/${id}`);
+              navigate(`/edit`, { state: { data } });
             }}
             style={{
               border: "none",
