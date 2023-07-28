@@ -17,6 +17,7 @@ export default function Main({ todos, setTodos }) {
   const deleteHandler = (item) => {
     alert('삭제할까?');
 
+    // 구글검색
     if (!window.confirm) {
       return;
     }
@@ -27,6 +28,7 @@ export default function Main({ todos, setTodos }) {
   };
 
   const navigate = useNavigate();
+
   return (
     <>
       <Header />
