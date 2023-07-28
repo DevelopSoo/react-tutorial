@@ -2,23 +2,31 @@ import React from "react";
 import Header from "../common/Header";
 import Container from "../common/Container";
 import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { deletePost } from "../redux/modules/posts";
 
-export default function Detail({ posts, onClickDeleteBtnHandler }) {
+export default function Detail() {
+  const posts = useSelector((state) => state.posts);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // useParams를 이용해 url의 id를 가져온다.
-  // useParams는 객체 형태로 데이터 값을 반환하며,
-  // 객체 안의 id값만을 사용하려면 구조분해할당으로 뽑아낸다.
   const { id } = useParams();
-
-  console.log(id);
-  console.log(posts);
-
-  // post의 id값 === 현재 URL id값이 일치하는 데이터를 찾아낸다.
   const data = posts.find((post) => post.id === id);
-
-  // 구조분해할당으로 필요한 데이터 뽑아내기
   const { title, content } = data;
+
+  // 수정 버튼
+  const editBtnHandler = () => {
+    navigate(`/edit`, { state: { data } });
+  };
+
+  // 삭제 버튼
+  const deleteBtnHandler = () => {
+    const result = window.confirm("정말로 삭제할거냥?");
+    if (result) {
+      dispatch(deletePost(id));
+    }
+    navigate("/");
+  };
 
   return (
     <>
@@ -51,9 +59,7 @@ export default function Detail({ posts, onClickDeleteBtnHandler }) {
           }}
         >
           <button
-            onClick={() => {
-              navigate(`/edit`, { state: { data } });
-            }}
+            onClick={editBtnHandler}
             style={{
               border: "none",
               padding: "8px",
@@ -67,9 +73,7 @@ export default function Detail({ posts, onClickDeleteBtnHandler }) {
             수정
           </button>
           <button
-            onClick={() => {
-              onClickDeleteBtnHandler(id);
-            }}
+            onClick={deleteBtnHandler}
             style={{
               border: "none",
               padding: "8px",

@@ -7,18 +7,6 @@ import Signup from "./pages/Signup";
 import Edit from "./pages/Edit";
 
 function App() {
-  // const posts = useSelector((state) => state.posts);
-
-  // // 삭제 버튼
-  // const onClickDeleteBtnHandler = (id) => {
-  //   const result = window.confirm("정말로 삭제할거냥?");
-  //   if (result) {
-  //     const filterdPost = posts.filter((post) => post.id !== id);
-  //     setPosts(filterdPost);
-  //   }
-  //   navigate("/");
-  // };
-
   return (
     // 페이지 이동에 사용되는 Route 태그를 위해선 Routes로 먼저 감싸야 한다.
     <Routes>

@@ -2,11 +2,14 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../common/Header";
 import Container from "../common/Container";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { deletePost } from "../redux/modules/posts";
 
 export default function Main() {
   const posts = useSelector((state) => state.posts);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
   return (
     <>
       <Header />
@@ -34,10 +37,6 @@ export default function Main() {
             추가
           </button>
         </div>
-
-        {/* map() : 배열 안의 값들을 순회하면서 화면 렌더링.  */}
-        {/* map함수를 실행하고 return하는 최상단 태그 안에 key값을 입력해야 한다.
-            그 이유는 개별 요소를 id값으로 빠르게 구분해주기 위해서. */}
         {posts.map((post) => (
           <div
             key={post.id}
@@ -86,7 +85,7 @@ export default function Main() {
               <div>
                 <button
                   onClick={() => {
-                    navigate(`/edit/${post.id}`);
+                    navigate("/edit", { state: { data: post } });
                   }}
                   style={{
                     border: "none",
@@ -101,6 +100,13 @@ export default function Main() {
                   수정
                 </button>
                 <button
+                  onClick={() => {
+                    const result = window.confirm("정말로 삭제할거냥?");
+                    if (result) {
+                      dispatch(deletePost(post.id));
+                    }
+                    navigate("/");
+                  }}
                   style={{
                     border: "none",
                     padding: "8px",

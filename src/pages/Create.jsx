@@ -8,6 +8,7 @@ import { addPost } from "../redux/modules/posts";
 
 export default function Create() {
   const dispatch = useDispatch();
+
   const [title, setTitle] = useState(""); // 제목 상태 관리
   const [content, setContent] = useState(""); // 내용 상태 관리
   const navigate = useNavigate();
