@@ -9,8 +9,10 @@ const initialState = [
 const todosSlice = createSlice({
   name: 'todos',
   initialState,
-  reducers: {}
+  reducers: {
+    add(state, action) {}
+  }
 });
 
-export const {} = todosSlice.actions;
+export const { add } = todosSlice.actions;
 export default todosSlice.reducer;
