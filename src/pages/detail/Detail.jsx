@@ -46,7 +46,6 @@ export default function Detail({ todos, setTodos }) {
             color="orange"
             onClick={() => {
               navigate(`/edit/${filteredTodo.id}`);
-              setTodos();
             }}
           >
             수정

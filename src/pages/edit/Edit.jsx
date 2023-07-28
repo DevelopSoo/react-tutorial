@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Header from '../../common/Header';
 import Container from '../../common/Container';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Button from '../../components/button/Button';
 import * as S from './Edit.styled';
 
@@ -9,17 +9,30 @@ export default function Edit({ todos, setTodos }) {
   const { id } = useParams();
   const filteredTodo = todos.find((todo) => todo.id === id);
 
-  const [updateTitle, setUpdateTitle] = useState('');
-  const [updateContent, setUpdateContent] = useState('');
+  const [updateTitle, setUpdateTitle] = useState(filteredTodo.title);
+  const [updateContent, setUpdateContent] = useState(filteredTodo.content);
+
+  const navigate = useNavigate();
 
   const upDateTodos = () => {
-    const newTodo = {
-      ...filteredTodo,
+    const editTodo = {
+      id: filteredTodo.id,
       title: updateTitle,
-      content: updateContent
+      content: updateContent,
+      author: '김선익'
     };
 
-    setTodos(newTodo);
+    //기존에 있던 todo + 수정된 todo
+    const result = todos.map((todo) => {
+      if (todo.id !== id) {
+        return todo;
+      } else {
+        return editTodo;
+      }
+    });
+
+    setTodos(result);
+    navigate('/');
   };
 
   if (!filteredTodo) {
@@ -34,6 +47,7 @@ export default function Edit({ todos, setTodos }) {
           onSubmit={(e) => {
             e.preventDefault();
             console.log('제출!');
+            upDateTodos();
           }}
         >
           <div>
