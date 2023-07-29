@@ -39,7 +39,7 @@ const posts = createSlice({
     // 게시글 수정
     editPost: (state, action) => {
       const { id, title, content } = action.payload;
-      console.log(action.payload);
+      // console.log(action.payload);
       return state.map((post) => {
         if (post.id === id) {
           return {
@@ -51,14 +51,6 @@ const posts = createSlice({
         return post;
       });
     },
-
-    // setPosts(
-    //   posts.map((post) =>
-    //     post.id === id
-    //       ? { ...post, title: editTitle, content: editContent }
-    //       : post
-    //   )
-    // );
   },
 });
 
