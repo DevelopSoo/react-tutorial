@@ -3,11 +3,27 @@ import { useNavigate } from "react-router-dom";
 import Header from "../common/Header";
 import Container from "../common/Container";
 import { nanoid } from "@reduxjs/toolkit";
+import { useDispatch, useSelector } from "react-redux";
+import { addPost } from "../redux/posts";
 
-export default function Create({ posts, setPosts }) {
-  const [title, setTitle] = useState(""); // 제목 상태 관리
-  const [content, setContent] = useState(""); // 내용 상태 관리
+export default function Create() {
+  const posts = useSelector((state) => state.posts);
+  console.log(posts);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // 변경된 내용 한번에 상태 관리
+  const [createInput, setCreateInput] = useState({
+    title: "",
+    content: "",
+  });
+
+  const onCangeHandler = (e) => {
+    setCreateInput((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
 
   return (
     <>
@@ -22,26 +38,25 @@ export default function Create({ posts, setPosts }) {
           }}
           onSubmit={(e) => {
             e.preventDefault();
-            console.log("제출!");
+            // console.log("제출!");
             const newPost = {
               id: nanoid(),
-              title: title,
-              content: content,
+              title: createInput.title,
+              content: createInput.content,
               author: "호떡",
             };
-            const updatePost = [...posts, newPost];
-            setPosts(updatePost);
+
+            dispatch(addPost(newPost));
 
             navigate("/");
           }}
         >
           <div>
             <input
+              name="title"
               placeholder="제목"
-              value={title}
-              onChange={(e) => {
-                setTitle(e.target.value);
-              }}
+              value={posts.title}
+              onChange={onCangeHandler}
               style={{
                 width: "100%",
                 height: "60px",
@@ -59,11 +74,10 @@ export default function Create({ posts, setPosts }) {
             }}
           >
             <textarea
+              name="content"
               placeholder="내용"
-              value={content}
-              onChange={(e) => {
-                setContent(e.target.value);
-              }}
+              value={posts.content}
+              onChange={onCangeHandler}
               style={{
                 resize: "none",
                 height: "100%",
