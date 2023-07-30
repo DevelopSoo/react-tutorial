@@ -3,10 +3,13 @@ import Container from "../common/Container";
 import { useState } from "react";
 import { nanoid } from "nanoid";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addPost } from "../redux/posts";
 
+// TODO: 원래는 이 페이지에서도 로그인 안되어 있으면 로그인하라고 한 번 더 체크해야 함
 export default function Create() {
+  // @ts-ignore
+  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [inputs, setInputs] = useState({
     title: "",
@@ -35,7 +38,7 @@ export default function Create() {
             dispatch(
               addPost({
                 id: nanoid(),
-                author: "병수",
+                author: user.email,
                 ...inputs,
               })
             );

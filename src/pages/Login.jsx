@@ -40,6 +40,7 @@ export default function Login() {
   const login = async () => {
     try {
       await signInWithEmailAndPassword(auth, inputs.email, inputs.password);
+      // TODO: 무조건 메인 페이지가 아니라 로그인 페이지 바로 직전으로 이동하는게 더 좋지 않을까?
       navigate("/");
     } catch (error) {
       if (LOGIN_ERROR_CODES[error.code]) {
