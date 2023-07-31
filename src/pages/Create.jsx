@@ -3,24 +3,48 @@ import Container from "../common/Container";
 import { useState } from "react";
 import { nanoid } from "nanoid";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { addPost } from "../redux/posts";
+import { useSelector } from "react-redux";
+import { useMutation, useQueryClient } from "react-query";
+import { api } from "../lib/axios/base";
 
-// TODO: 원래는 이 페이지에서도 로그인 안되어 있으면 로그인하라고 한 번 더 체크해야 함
+// TODO: 원래는 이 페이지에서도 로그인 안되어 있으면 로그인하라고 한 번 더 체크하는 것이 더 안전함
 export default function Create() {
+  const queryClient = useQueryClient();
+  const mutation = useMutation(
+    async (newData) => {
+      await api.post("/posts", newData);
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("posts");
+      },
+    }
+  );
+
   // @ts-ignore
   const user = useSelector((state) => state.user);
-  const dispatch = useDispatch();
   const [inputs, setInputs] = useState({
     title: "",
     content: "",
   });
   const navigate = useNavigate();
+
   const onChangeHandler = (e) => {
     setInputs((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
+  };
+
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
+    // @ts-ignore
+    mutation.mutate({
+      id: nanoid(),
+      author: user.email,
+      ...inputs,
+    });
+    navigate("/");
   };
   return (
     <>
@@ -33,17 +57,7 @@ export default function Create() {
             flexDirection: "column",
             justifyContent: "space-evenly",
           }}
-          onSubmit={(e) => {
-            e.preventDefault();
-            dispatch(
-              addPost({
-                id: nanoid(),
-                author: user.email,
-                ...inputs,
-              })
-            );
-            navigate("/");
-          }}
+          onSubmit={onSubmitHandler}
         >
           <div>
             <input

@@ -2,23 +2,46 @@ import { Fragment, useState } from "react";
 import Header from "../common/Header";
 import Container from "../common/Container";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { editPost } from "../redux/posts";
+import { useMutation, useQueryClient } from "react-query";
+import { api } from "../lib/axios/base";
 
 export default function Edit() {
   const { state } = useLocation();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation(
+    async (editedValue) => {
+      await api.put(`/posts/${state?.post.id}`, editedValue);
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("posts");
+      },
+    }
+  );
+
   const [inputs, setInputs] = useState({
     title: state?.post.title || "",
     content: state?.post.content || "",
   });
 
-  const dispatch = useDispatch();
   const onChangeHandler = (e) => {
     setInputs((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
+  };
+
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
+    if (state) {
+      mutation.mutate({
+        ...state.post,
+        ...inputs,
+      });
+    }
+    navigate("/");
   };
 
   return (
@@ -32,18 +55,7 @@ export default function Edit() {
             flexDirection: "column",
             justifyContent: "space-evenly",
           }}
-          onSubmit={(e) => {
-            e.preventDefault();
-            if (state) {
-              dispatch(
-                editPost({
-                  ...state.post,
-                  ...inputs,
-                })
-              );
-            }
-            navigate("/");
-          }}
+          onSubmit={onSubmitHandler}
         >
           <div>
             <input

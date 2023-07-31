@@ -1,16 +1,37 @@
 import { useNavigate } from "react-router-dom";
 import Header from "../common/Header";
 import Container from "../common/Container";
-import { useDispatch, useSelector } from "react-redux";
-import { deletePost } from "../redux/posts";
+import { useSelector } from "react-redux";
+import { useQueryClient } from "react-query";
+import { useQuery } from "react-query";
+import { api } from "../lib/axios/base";
+import { useMutation } from "react-query";
 
 export default function Main() {
   const navigate = useNavigate();
-  // @ts-ignore
-  const posts = useSelector((state) => state.posts);
+  const queryClient = useQueryClient();
+  const {
+    isLoading,
+    data: posts,
+    error,
+  } = useQuery("posts", async () => {
+    const res = await api.get("/posts");
+    return res.data;
+  });
+
+  const mutation = useMutation(
+    async (id) => {
+      await api.delete(`/posts/${id}`);
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("posts");
+      },
+    }
+  );
+
   // @ts-ignore
   const user = useSelector((state) => state.user);
-  const dispatch = useDispatch();
 
   const isLoggedIn = () => {
     if (!user.email) return false;
@@ -20,6 +41,33 @@ export default function Main() {
   const isSameUser = (author) => {
     if (user.email !== author) return false;
     return true;
+  };
+
+  const goToEditPage = (post) => {
+    if (!isLoggedIn()) {
+      return alert("로그인 후 사용할 수 있습니다.");
+    }
+    if (!isSameUser(post.author)) {
+      return alert("작성자가 일치하지 않습니다.");
+    }
+    navigate("/edit", {
+      state: {
+        post,
+      },
+    });
+  };
+
+  const onDeleteHandler = (post) => {
+    if (!isLoggedIn()) {
+      return alert("로그인 후 사용할 수 있습니다.");
+    }
+    if (!isSameUser(post.author)) {
+      return alert("작성자가 일치하지 않습니다.");
+    }
+    const result = window.confirm("정말로 삭제하시겠습니까?");
+    if (result) {
+      mutation.mutate(post.id);
+    }
   };
 
   return (
@@ -52,7 +100,9 @@ export default function Main() {
             추가
           </button>
         </div>
-        {posts.map((post) => (
+        {isLoading ? <div>로딩중</div> : null}
+        {error ? <div>에러발생</div> : null}
+        {posts?.map((post) => (
           <div
             key={post.id}
             style={{
@@ -99,19 +149,7 @@ export default function Main() {
               <div>{post.author}</div>
               <div>
                 <button
-                  onClick={() => {
-                    if (!isLoggedIn()) {
-                      return alert("로그인 후 사용할 수 있습니다.");
-                    }
-                    if (!isSameUser(post.author)) {
-                      return alert("작성자가 일치하지 않습니다.");
-                    }
-                    navigate("/edit", {
-                      state: {
-                        post,
-                      },
-                    });
-                  }}
+                  onClick={() => goToEditPage(post)}
                   style={{
                     border: "none",
                     padding: "8px",
@@ -125,18 +163,7 @@ export default function Main() {
                   수정
                 </button>
                 <button
-                  onClick={() => {
-                    if (!isLoggedIn()) {
-                      return alert("로그인 후 사용할 수 있습니다.");
-                    }
-                    if (!isSameUser(post.author)) {
-                      return alert("작성자가 일치하지 않습니다.");
-                    }
-                    const result = window.confirm("정말로 삭제하시겠습니까?");
-                    if (result) {
-                      dispatch(deletePost(post.id));
-                    }
-                  }}
+                  onClick={() => onDeleteHandler(post)}
                   style={{
                     border: "none",
                     padding: "8px",
