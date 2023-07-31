@@ -1,13 +1,14 @@
 import Header from "../common/Header";
 import Container from "../common/Container";
 import { useNavigate, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { useQueryClient, useQuery, useMutation } from "react-query";
 import { api } from "../lib/axios/base";
+import { useAuth } from "../hooks/useAuth";
 
 export default function Detail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { isLoggedIn, isSameUser } = useAuth();
   const queryClient = useQueryClient();
   const {
     isLoading,
@@ -28,18 +29,6 @@ export default function Detail() {
       },
     }
   );
-  // @ts-ignore
-  const user = useSelector((state) => state.user);
-
-  const isLoggedIn = () => {
-    if (!user.email) return false;
-    return true;
-  };
-
-  const isSameUser = (author) => {
-    if (user.email !== author) return false;
-    return true;
-  };
 
   const goToEditPage = () => {
     if (!isLoggedIn()) {

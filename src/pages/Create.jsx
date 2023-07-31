@@ -3,9 +3,9 @@ import Container from "../common/Container";
 import { useState } from "react";
 import { nanoid } from "nanoid";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { useMutation, useQueryClient } from "react-query";
 import { api } from "../lib/axios/base";
+import { useAuth } from "../hooks/useAuth";
 
 // TODO: 원래는 이 페이지에서도 로그인 안되어 있으면 로그인하라고 한 번 더 체크하는 것이 더 안전함
 export default function Create() {
@@ -21,8 +21,7 @@ export default function Create() {
     }
   );
 
-  // @ts-ignore
-  const user = useSelector((state) => state.user);
+  const { user } = useAuth();
   const [inputs, setInputs] = useState({
     title: "",
     content: "",

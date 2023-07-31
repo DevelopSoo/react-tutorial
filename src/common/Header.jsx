@@ -1,13 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import { FaHome } from "react-icons/fa";
-import { useSelector } from "react-redux";
 import { signOut } from "firebase/auth";
 import { auth } from "../lib/firebase/firebase";
+import { useAuth } from "../hooks/useAuth";
 
 export default function Header() {
   const navigate = useNavigate();
-  // @ts-ignore
-  const user = useSelector((state) => state.user);
+  const { user } = useAuth();
   return (
     <header
       style={{
