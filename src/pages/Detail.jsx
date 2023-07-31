@@ -3,7 +3,7 @@ import Header from "../common/Header";
 import Container from "../common/Container";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteItem } from "../redux/config/configureStore";
+import { deleteItem } from "../redux/modules/itemSlice";
 
 export default function Detail() {
   const navigate = useNavigate();

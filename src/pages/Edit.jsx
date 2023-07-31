@@ -3,7 +3,7 @@ import Header from "../common/Header";
 import Container from "../common/Container";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { editItem } from "../redux/config/configureStore";
+import { editItem } from "../redux/modules/itemSlice";
 
 export default function Edit() {
   const { id } = useParams();
@@ -19,8 +19,11 @@ export default function Edit() {
   });
 
   // title, content 수정을 위해 useState 선언
-  const [title, setTitle] = useState(item.title);
-  const [content, setContent] = useState(item.content);
+  // or연산자를 활용해 undefined 일때는 빈 문자열을 초기값으로
+  let initTitle = item?.title || "";
+  let initContent = item?.content || "";
+  const [title, setTitle] = useState(initTitle);
+  const [content, setContent] = useState(initContent);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 

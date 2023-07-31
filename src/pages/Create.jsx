@@ -3,7 +3,7 @@ import Header from "../common/Header";
 import Container from "../common/Container";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { addItem } from "../redux/config/configureStore";
+import { addItem } from "../redux/modules/itemSlice";
 
 export default function Create() {
   // title, content 수정을 위해 useState 선언
@@ -25,7 +25,6 @@ export default function Create() {
     // useDispatch로 변경함수 사용하기
     // action.payload로 입력된 title, content 객체 보내주기
     dispatch(addItem({ title, content }));
-    // 추가 후 메인페이지로 이동
     navigate("/");
   };
 
@@ -49,7 +48,7 @@ export default function Create() {
             <input
               placeholder="제목"
               type="text"
-              // value=""
+              value={title}
               style={{
                 width: "100%",
                 height: "60px",
@@ -72,7 +71,7 @@ export default function Create() {
           >
             <textarea
               placeholder="내용"
-              // value
+              value={content}
               style={{
                 resize: "none",
                 height: "100%",
