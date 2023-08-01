@@ -1,10 +1,50 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "../common/Header";
 import Container from "../common/Container";
 import { useNavigate } from "react-router-dom";
+import { auth } from "../firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 export default function Login() {
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  // 입력값 받기
+  const emailChangeHandler = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const passwordChangeHandler = (e) => {
+    setPassword(e.target.value);
+  };
+
+  const login = async (event) => {
+    event.preventDefault();
+    // 유효성 검사
+    if (email === "") {
+      alert("이메일을 입력해주세요");
+    } else if (password === "") {
+      alert("비밀번호를 입력해주세요");
+    } else {
+      try {
+        // 로그인
+        const userCredential = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        const uid = userCredential.user.uid;
+        console.log(uid);
+        navigate("/");
+      } catch (error) {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode);
+        alert("가입에 실패했습니다.\n" + errorMessage);
+      }
+    }
+  };
   return (
     <>
       <Header />
@@ -26,6 +66,7 @@ export default function Login() {
             >
               <input
                 placeholder="이메일"
+                value={email}
                 style={{
                   width: "100%",
                   height: "40px",
@@ -34,6 +75,9 @@ export default function Login() {
                   border: "1px solid lightgrey",
                   padding: "8px",
                   boxSizing: "border-box",
+                }}
+                onChange={(e) => {
+                  emailChangeHandler(e);
                 }}
               />
             </div>
@@ -45,6 +89,7 @@ export default function Login() {
             >
               <input
                 placeholder="비밀번호"
+                value={password}
                 type="password"
                 style={{
                   width: "100%",
@@ -54,6 +99,9 @@ export default function Login() {
                   border: "1px solid lightgrey",
                   padding: "8px",
                   boxSizing: "border-box",
+                }}
+                onChange={(e) => {
+                  passwordChangeHandler(e);
                 }}
               />
             </div>
@@ -73,9 +121,7 @@ export default function Login() {
                   color: "white",
                   cursor: "pointer",
                 }}
-                onClick={() => {
-                  navigate("/login");
-                }}
+                onClick={login}
               >
                 로그인하기
               </button>

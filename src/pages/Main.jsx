@@ -5,7 +5,7 @@ import Container from "../common/Container";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteItem } from "../redux/modules/itemSlice";
 
-export default function Main() {
+export default function Main({ currentUser }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -20,6 +20,7 @@ export default function Main() {
       dispatch(deleteItem(id));
     }
   };
+
   return (
     <>
       <Header />
@@ -33,7 +34,12 @@ export default function Main() {
         >
           <button
             onClick={() => {
-              navigate("/create");
+              // 추가버튼 클릭 시 로그인 여부 확인
+              if (currentUser) {
+                navigate("/create");
+              } else {
+                alert("로그인이 필요합니다.");
+              }
             }}
             style={{
               border: "none",

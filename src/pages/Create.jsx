@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addItem } from "../redux/modules/itemSlice";
 
-export default function Create() {
+export default function Create({ currentUser }) {
   // title, content 수정을 위해 useState 선언
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -24,7 +24,7 @@ export default function Create() {
   const itemAddHandler = () => {
     // useDispatch로 변경함수 사용하기
     // action.payload로 입력된 title, content 객체 보내주기
-    dispatch(addItem({ title, content }));
+    dispatch(addItem({ title, content, currentUser }));
     navigate("/");
   };
 

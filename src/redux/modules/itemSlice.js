@@ -37,7 +37,7 @@ const items = createSlice({
         id: uuid(),
         title: action.payload.title,
         content: action.payload.content,
-        author: `작성자`,
+        author: action.payload.currentUser,
       };
       return [...state, newItem];
       //immer, state.push
