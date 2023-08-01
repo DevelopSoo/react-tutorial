@@ -14,13 +14,16 @@ import { setUser } from "./redux/user";
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       dispatch(
         setUser({
           email: user?.email,
         })
       );
     });
+    return () => {
+      unsubscribe();
+    };
   }, []);
   return (
     <Routes>
