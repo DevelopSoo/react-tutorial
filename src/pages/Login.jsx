@@ -38,9 +38,9 @@ export default function Login() {
     switch (errorCode) {
       case "auth/user-not-found":
       case "auth/missing-email":
-        return "이메일이 입력되지 않았습니다.";
+        return "잘못된 이메일입니다.";
       case "auth/missing-password":
-        return "비밀번호가 입력되지 않았습니다.";
+        return "잘못된 비밀번호입니다.";
       // case "auth/wrong-password":
       //   return "비밀번호가 일치하지 않습니다.";
       case "auth/email-already-in-use":

@@ -8,6 +8,7 @@ export default function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.authSlice.isLoggedIn); // 로그인 상태를 가져옴
+  const user = useSelector((state) => state.authSlice.user);
 
   const logoutHandler = () => {
     dispatch(logoutSuccess());
@@ -42,7 +43,7 @@ export default function Header() {
       >
         {isLoggedIn ? (
           <>
-            <div>이메일</div>
+            <div>{user}</div>
             <button onClick={logoutHandler}>로그아웃</button>
           </>
         ) : (

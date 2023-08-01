@@ -6,9 +6,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { deletePost } from "../redux/slice/posts";
 
 export default function Main() {
-  const posts = useSelector((state) => state.posts);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const posts = useSelector((state) => state.posts);
+  const isLoggedIn = useSelector((state) => state.authSlice.isLoggedIn); // 로그인 상태를 가져옴
+
+  const createBtnHandler = () => {
+    isLoggedIn
+      ? navigate("/create")
+      : alert("로그인이 필요합니다.") || navigate("/login");
+  };
 
   return (
     <>
@@ -22,9 +30,7 @@ export default function Main() {
           }}
         >
           <button
-            onClick={() => {
-              navigate("/create");
-            }}
+            onClick={createBtnHandler}
             style={{
               border: "none",
               padding: "8px",
