@@ -4,9 +4,12 @@ import Container from "../common/Container";
 import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../redux/slice/authSlice";
 
 export default function Signup() {
   const navigate = useNavigate();
+  const dispatch = useDispatch((state) => state.authSlice);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,13 +20,11 @@ export default function Signup() {
     e.preventDefault();
     try {
       if (password === confirmPassword) {
-        const userCredential = await createUserWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
-        console.log(userCredential);
-        navigate("/"); // 조건을 모두 충족하면 홈으로 이동
+        await createUserWithEmailAndPassword(auth, email, password);
+        // console.log(userCredential);
+        alert("회원가입에 성공하셨습니다.");
+        dispatch(loginSuccess(email)); // 로그인 상태로 변경
+        navigate("/");
       } else {
         alert(getErrorMessage("auth/wrong-password"));
       }

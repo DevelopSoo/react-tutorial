@@ -1,9 +1,18 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaHome, FaItchIo } from "react-icons/fa";
+import { FaHome } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutSuccess } from "../redux/slice/authSlice";
 
 export default function Header() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => state.authSlice.isLoggedIn); // 로그인 상태를 가져옴
+
+  const logoutHandler = () => {
+    dispatch(logoutSuccess());
+  };
+
   return (
     <header
       style={{
@@ -31,8 +40,17 @@ export default function Header() {
           gap: "12px",
         }}
       >
-        <Link to="/login">로그인</Link>
-        <Link to="/signup">회원가입</Link>
+        {isLoggedIn ? (
+          <>
+            <div>이메일</div>
+            <button onClick={logoutHandler}>로그아웃</button>
+          </>
+        ) : (
+          <>
+            <Link to="/login">로그인</Link>
+            <Link to="/signup">회원가입</Link>
+          </>
+        )}
       </div>
     </header>
   );
