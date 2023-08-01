@@ -6,9 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { deletePost } from "../redux/slice/posts";
 
 export default function Detail() {
-  const posts = useSelector((state) => state.posts);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const posts = useSelector((state) => state.posts);
+  const user = useSelector((state) => state.authSlice.user);
 
   const { id } = useParams();
   const data = posts.find((post) => post.id === id);
@@ -51,41 +53,46 @@ export default function Detail() {
         >
           {content}
         </div>
-        <div
-          style={{
-            marginTop: "12px",
-            display: "flex",
-            justifyContent: "end",
-          }}
-        >
-          <button
-            onClick={editBtnHandler}
+        {/* 작성자일 경우에만 수정, 삭제 버튼 보여주기 */}
+        {user && user === data.author ? (
+          <div
             style={{
-              border: "none",
-              padding: "8px",
-              borderRadius: "6px",
-              backgroundColor: "orange",
-              color: "white",
-              cursor: "pointer",
-              marginRight: "6px",
+              marginTop: "12px",
+              display: "flex",
+              justifyContent: "end",
             }}
           >
-            수정
-          </button>
-          <button
-            onClick={deleteBtnHandler}
-            style={{
-              border: "none",
-              padding: "8px",
-              borderRadius: "6px",
-              backgroundColor: "red",
-              color: "white",
-              cursor: "pointer",
-            }}
-          >
-            삭제
-          </button>
-        </div>
+            <button
+              onClick={editBtnHandler}
+              style={{
+                border: "none",
+                padding: "8px",
+                borderRadius: "6px",
+                backgroundColor: "orange",
+                color: "white",
+                cursor: "pointer",
+                marginRight: "6px",
+              }}
+            >
+              수정
+            </button>
+            <button
+              onClick={deleteBtnHandler}
+              style={{
+                border: "none",
+                padding: "8px",
+                borderRadius: "6px",
+                backgroundColor: "red",
+                color: "white",
+                cursor: "pointer",
+              }}
+            >
+              삭제
+            </button>
+          </div>
+        ) : (
+          <></>
+        )}
       </Container>
     </>
   );
