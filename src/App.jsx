@@ -34,7 +34,10 @@ function App() {
       {/* path="/"이기 때문에 '<주소>/'인 주소로 접속할 경우 Main 컴포넌트가 화면에 보여지게 된다.  */}
       {/* props로 items 내려보내주기 */}
       <Route path="/" element={<Main currentUser={currentUser} />} />
-      <Route path="/detail/:id" element={<Detail />} />
+      <Route
+        path="/detail/:id"
+        element={<Detail currentUser={currentUser} />}
+      />
       <Route path="/create" element={<Create currentUser={currentUser} />} />
       <Route path="/edit/:id" element={<Edit />} />
       <Route path="/signup" element={<Signup />} />

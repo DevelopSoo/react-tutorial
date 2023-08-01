@@ -5,7 +5,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteItem } from "../redux/modules/itemSlice";
 
-export default function Detail() {
+export default function Detail({ currentUser }) {
+  // props로 로그인된 유저 정보 currentUser 받아오기
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -21,12 +22,15 @@ export default function Detail() {
   });
 
   // item 삭제 이벤트
-  const itemDeleteHandler = () => {
-    if (window.confirm("삭제할까??")) {
-      // useDispatch로 변경함수 사용하기
-      // action.payload로 id 보내주기
-      dispatch(deleteItem(id));
-      navigate("/");
+  const itemDeleteHandler = (author) => {
+    if (currentUser === author) {
+      if (window.confirm("삭제할까??")) {
+        // useDispatch로 변경함수 사용하기
+        // action.payload로 id 보내주기
+        dispatch(deleteItem(id));
+      }
+    } else {
+      alert("해당 글의 작성자가 아닙니다.");
     }
   };
 
@@ -62,7 +66,11 @@ export default function Detail() {
         >
           <button
             onClick={() => {
-              navigate(`/edit/${item.id}`);
+              if (currentUser === item.author) {
+                navigate(`/edit/${item.id}`);
+              } else {
+                alert("해당 글의 작성자가 아닙니다.");
+              }
             }}
             style={{
               border: "none",
@@ -78,7 +86,7 @@ export default function Detail() {
           </button>
           <button
             onClick={() => {
-              itemDeleteHandler();
+              itemDeleteHandler(item.author);
             }}
             style={{
               border: "none",

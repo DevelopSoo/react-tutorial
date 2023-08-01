@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteItem } from "../redux/modules/itemSlice";
 
 export default function Main({ currentUser }) {
+  // props로 로그인된 유저 정보 currentUser 받아오기
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -13,11 +14,15 @@ export default function Main({ currentUser }) {
   const items = useSelector((state) => state.Items);
 
   // item 삭제 이벤트
-  const itemDeleteHandler = (id) => {
-    if (window.confirm("삭제할까??")) {
-      // useDispatch로 변경함수 사용하기
-      // action.payload로 id 보내주기
-      dispatch(deleteItem(id));
+  const itemDeleteHandler = (id, author) => {
+    if (currentUser === author) {
+      if (window.confirm("삭제할까??")) {
+        // useDispatch로 변경함수 사용하기
+        // action.payload로 id 보내주기
+        dispatch(deleteItem(id));
+      }
+    } else {
+      alert("해당 글의 작성자가 아닙니다.");
     }
   };
 
@@ -106,7 +111,11 @@ export default function Main({ currentUser }) {
               <div>
                 <button
                   onClick={() => {
-                    navigate(`/edit/${item.id}`);
+                    if (currentUser === item.author) {
+                      navigate(`/edit/${item.id}`);
+                    } else {
+                      alert("해당 글의 작성자가 아닙니다.");
+                    }
                   }}
                   style={{
                     border: "none",
@@ -123,7 +132,7 @@ export default function Main({ currentUser }) {
                 <button
                   onClick={() => {
                     // 삭제할 item을 특정하기 위해 해당 버튼이 있는 item의 id를 보내준다.
-                    itemDeleteHandler(item.id);
+                    itemDeleteHandler(item.id, item.author);
                   }}
                   style={{
                     border: "none",

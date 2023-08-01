@@ -41,7 +41,7 @@ export default function Login() {
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorCode);
-        alert("가입에 실패했습니다.\n" + errorMessage);
+        alert("로그인에 실패했습니다.\n" + errorMessage);
       }
     }
   };
