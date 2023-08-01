@@ -4,13 +4,14 @@ import Header from "../common/Header";
 import Container from "../common/Container";
 import { nanoid } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
-import { addPost } from "../redux/posts";
+import { addPost } from "../redux/slice/posts";
 
 export default function Create() {
-  const posts = useSelector((state) => state.posts);
-  console.log(posts);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const posts = useSelector((state) => state.posts);
+  const user = useSelector((state) => state.authSlice.user);
 
   // 변경된 내용 한번에 상태 관리
   const [createInput, setCreateInput] = useState({
@@ -43,7 +44,7 @@ export default function Create() {
               id: nanoid(),
               title: createInput.title,
               content: createInput.content,
-              author: "호떡",
+              author: user,
             };
 
             dispatch(addPost(newPost));
