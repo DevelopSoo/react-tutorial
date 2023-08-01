@@ -1,22 +1,34 @@
 import React, { useState } from 'react';
-
 import Header from '../common/Header';
 import Container from '../common/Container';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { add } from '../redux/modules/todosSlice';
+import uuid from 'react-uuid';
 
-export default function Create({ todos, setTodos }) {
+export default function Create() {
+  const navigate = useNavigate();
+  // useSelector로 redux 연결
+  const dispatch = useDispatch();
+
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+
   const titleChangeHandler = (e) => {
-    setTodos((prevState) => {
-      return { ...prevState, title: e.target.value };
-    });
+    setTitle(e.target.value);
   };
 
   const contentChangeHandler = (e) => {
-    setTodos((prevState) => {
-      return { ...prevState, content: e.target.value };
-    });
+    setContent(e.target.value);
   };
 
-  const addTodo = () => {};
+  // 새로운 todo 객체 생성
+  const newTodo = {
+    id: uuid(),
+    title,
+    content,
+    author: '김선익'
+  };
 
   return (
     <>
@@ -32,6 +44,9 @@ export default function Create({ todos, setTodos }) {
           onSubmit={(e) => {
             e.preventDefault();
             console.log('제출!');
+            dispatch(add(newTodo));
+
+            navigate('/');
           }}
         >
           <div>
@@ -50,7 +65,7 @@ export default function Create({ todos, setTodos }) {
               onChange={titleChangeHandler}
             />
           </div>
-          {todos.title}
+
           <div
             style={{
               height: '400px'
@@ -70,7 +85,6 @@ export default function Create({ todos, setTodos }) {
               }}
               onChange={contentChangeHandler}
             />
-            {todos.content}
           </div>
           <button
             style={{

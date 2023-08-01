@@ -9,7 +9,7 @@ function App() {
       {/* global style 추가 */}
       <GlobalStyle />
       <Fonts />
-      <Router />;
+      <Router />
     </>
   );
 }

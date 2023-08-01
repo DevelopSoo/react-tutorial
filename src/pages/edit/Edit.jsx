@@ -2,40 +2,30 @@ import React, { useState } from 'react';
 import Header from '../../common/Header';
 import Container from '../../common/Container';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { edit } from '../../redux/modules/todosSlice';
 import Button from '../../components/button/Button';
 import * as S from './Edit.styled';
 
-export default function Edit({ todos, setTodos }) {
+export default function Edit() {
   const { id } = useParams();
-  const filteredTodo = todos.find((todo) => todo.id === id);
+  const disPatch = useDispatch();
+  const reduxTodos = useSelector((state) => state.todos);
+  const findTodo = reduxTodos.find((todo) => todo.id === id);
 
-  const [updateTitle, setUpdateTitle] = useState(filteredTodo.title);
-  const [updateContent, setUpdateContent] = useState(filteredTodo.content);
+  const [title, setTitle] = useState(findTodo?.title || '');
+  const [content, setContent] = useState(findTodo?.content || '');
 
   const navigate = useNavigate();
 
-  const upDateTodos = () => {
-    const editTodo = {
-      id: filteredTodo.id,
-      title: updateTitle,
-      content: updateContent,
-      author: '김선익'
-    };
-
-    //기존에 있던 todo + 수정된 todo
-    const result = todos.map((todo) => {
-      if (todo.id !== id) {
-        return todo;
-      } else {
-        return editTodo;
-      }
-    });
-
-    setTodos(result);
-    navigate('/');
+  const editTodo = {
+    id: findTodo.id,
+    title,
+    content,
+    author: '김선익'
   };
 
-  if (!filteredTodo) {
+  if (!findTodo) {
     return <div>No todo found with the provided id</div>;
   }
 
@@ -47,26 +37,30 @@ export default function Edit({ todos, setTodos }) {
           onSubmit={(e) => {
             e.preventDefault();
             console.log('제출!');
-            upDateTodos();
+            // id값과, editTodo를 내려준다.
+            //id 값은 없어도 된다.  파라미터는 1개를 받는다.
+            disPatch(edit(editTodo));
+
+            navigate('/');
           }}
         >
           <div>
             <S.InputLayout
               // todos.title을 출력
-              value={updateTitle}
+              value={title}
               // 입력 값 변경하기
               onChange={(e) => {
-                setUpdateTitle(e.target.value);
+                setTitle(e.target.value);
               }}
             />
-            {/* {filteredTodo.title} */}
+            {/* {findTodo.title} */}
           </div>
           <div>
             <S.TextareaLayout
               // todos.content를 출력
-              value={updateContent}
+              value={content}
               onChange={(e) => {
-                setUpdateContent(e.target.value);
+                setContent(e.target.value);
               }}
             />
           </div>
