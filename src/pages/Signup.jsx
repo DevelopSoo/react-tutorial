@@ -1,10 +1,63 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "../common/Header";
 import Container from "../common/Container";
 import { useNavigate } from "react-router-dom";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase";
 
 export default function Signup() {
   const navigate = useNavigate();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  // 회원가입 등록 함수
+  const onSubmitSignUpHandler = async (e) => {
+    e.preventDefault();
+    try {
+      if (password === confirmPassword) {
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        console.log(userCredential);
+        navigate("/"); // 조건을 모두 충족하면 홈으로 이동
+      } else {
+        alert(getErrorMessage("auth/wrong-password"));
+      }
+    } catch (error) {
+      // console.log(error.code);
+      alert(getErrorMessage(error.code));
+    }
+  };
+
+  // 에러 코드에 따른 유효성 검사 한 번에 관리
+  const getErrorMessage = (errorCode) => {
+    switch (errorCode) {
+      case "auth/user-not-found":
+      case "auth/missing-email":
+        return "이메일이 입력되지 않았습니다.";
+      case "auth/missing-password":
+        return "비밀번호가 입력되지 않았습니다.";
+      case "auth/wrong-password":
+        return "비밀번호가 일치하지 않습니다.";
+      case "auth/email-already-in-use":
+        return "이미 사용 중인 이메일입니다.";
+      case "auth/weak-password":
+        return "비밀번호는 6글자 이상이어야 합니다.";
+      case "auth/network-request-failed":
+        return "네트워크 연결에 실패 하였습니다.";
+      case "auth/invalid-email":
+        return "잘못된 이메일 형식입니다.";
+      case "auth/internal-error":
+        return "잘못된 요청입니다.";
+      default:
+        return "회원가입에 실패하셨습니다.";
+    }
+  };
+
   return (
     <>
       <Header />
@@ -17,7 +70,7 @@ export default function Signup() {
             alignItems: "center",
           }}
         >
-          <form>
+          <form onSubmit={onSubmitSignUpHandler}>
             <div
               style={{
                 width: "360px",
@@ -26,6 +79,10 @@ export default function Signup() {
             >
               <input
                 placeholder="이메일"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
                 style={{
                   width: "100%",
                   height: "40px",
@@ -45,6 +102,10 @@ export default function Signup() {
             >
               <input
                 placeholder="비밀번호"
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
                 type="password"
                 style={{
                   width: "100%",
@@ -65,6 +126,10 @@ export default function Signup() {
             >
               <input
                 placeholder="비밀번호 확인"
+                value={confirmPassword}
+                onChange={(e) => {
+                  setConfirmPassword(e.target.value);
+                }}
                 type="password"
                 style={{
                   width: "100%",
@@ -83,7 +148,9 @@ export default function Signup() {
                 marginBottom: "12px",
               }}
             >
+              {/* 회원가입 버튼 */}
               <button
+                type="submit"
                 style={{
                   width: "100%",
                   border: "none",
@@ -102,7 +169,9 @@ export default function Signup() {
                 width: "360px",
               }}
             >
+              {/* 로그인하러가기 버튼 */}
               <button
+                type="button"
                 onClick={() => {
                   navigate("/login");
                 }}
