@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Header from "../common/Header";
 import Container from "../common/Container";
 import { useDispatch, useSelector } from "react-redux";
-import { deletePost } from "../redux/posts";
+import { deletePost } from "../redux/slice/posts";
 
 export default function Main() {
   const posts = useSelector((state) => state.posts);

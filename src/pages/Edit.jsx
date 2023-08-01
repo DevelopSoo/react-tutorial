@@ -3,7 +3,7 @@ import Header from "../common/Header";
 import Container from "../common/Container";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { editPost } from "../redux/posts";
+import { editPost } from "../redux/slice/posts";
 
 export default function Edit() {
   const dispatch = useDispatch();
