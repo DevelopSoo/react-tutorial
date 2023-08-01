@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaHome } from "react-icons/fa";
 
-export default function Header() {
+export default function Header({ currentUser, setCurrentUser }) {
   const navigate = useNavigate();
   return (
     <header
@@ -32,8 +32,35 @@ export default function Header() {
           gap: "12px",
         }}
       >
-        <Link to="/login">로그인</Link>
-        <Link to="/signup">회원가입</Link>
+        {currentUser ? (
+          <>
+            <button
+              style={{
+                backgroundColor: "transparent",
+                border: "none",
+                fontSize: "20px",
+                cursor: "pointer",
+              }}
+            >
+              로그아웃
+            </button>
+            <button
+              style={{
+                backgroundColor: "transparent",
+                border: "none",
+                fontSize: "20px",
+                cursor: "pointer",
+              }}
+            >
+              {currentUser}
+            </button>
+          </>
+        ) : (
+          <>
+            <Link to="/login">로그인</Link>
+            <Link to="/signup">회원가입</Link>
+          </>
+        )}
       </div>
     </header>
   );
