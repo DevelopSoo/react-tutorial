@@ -19,6 +19,7 @@ export default function Login() {
     setPassword(e.target.value);
   };
 
+  // 로그인 함수
   const login = async (event) => {
     event.preventDefault();
     // 유효성 검사
@@ -29,13 +30,7 @@ export default function Login() {
     } else {
       try {
         // 로그인
-        const userCredential = await signInWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
-        const uid = userCredential.user.uid;
-        console.log(uid);
+        await signInWithEmailAndPassword(auth, email, password);
         navigate("/");
       } catch (error) {
         const errorCode = error.code;

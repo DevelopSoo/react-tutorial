@@ -66,7 +66,7 @@ export default function Detail({ currentUser }) {
         >
           <button
             onClick={() => {
-              if (currentUser === item.author) {
+              if (currentUser === item?.author) {
                 navigate(`/edit/${item.id}`);
               } else {
                 alert("해당 글의 작성자가 아닙니다.");
@@ -86,7 +86,7 @@ export default function Detail({ currentUser }) {
           </button>
           <button
             onClick={() => {
-              itemDeleteHandler(item.author);
+              itemDeleteHandler(item?.author);
             }}
             style={{
               border: "none",

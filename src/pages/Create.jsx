@@ -24,6 +24,7 @@ export default function Create({ currentUser }) {
   const itemAddHandler = () => {
     // useDispatch로 변경함수 사용하기
     // action.payload로 입력된 title, content 객체 보내주기
+    // 현재 로그인된 email currentUser를 action.payload로 보내주기
     dispatch(addItem({ title, content, currentUser }));
     navigate("/");
   };

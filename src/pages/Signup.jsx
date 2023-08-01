@@ -37,14 +37,8 @@ export default function Signup() {
     } else {
       try {
         // 회원가입
-        const userCredential = await createUserWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
+        await createUserWithEmailAndPassword(auth, email, password);
         alert("가입되었습니다");
-        const uid = userCredential.user.uid;
-        console.log(uid);
         navigate("/");
       } catch (error) {
         // 회원가입 에러 발생시 에러메시지 출력
