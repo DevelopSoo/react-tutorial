@@ -2,15 +2,19 @@ import { useNavigate } from "react-router-dom";
 import Header from "../common/Header";
 import Container from "../common/Container";
 import { useSelector, useDispatch } from "react-redux";
-import { removeTodo } from "../slices/todosSlice";
+import { removeTodo } from "../redux/slices/todosSlice";
 
 export default function Main() {
   const navigate = useNavigate();
-  const todos = useSelector((state) => state.할일들); // slice의 상태를 가져옴
   const dispatch = useDispatch();
+  const todos = useSelector((state) => state.할일들); // slice의 상태를 가져옴
+
+  //로그인 되어있는 지 아닌 지의 상태를 알기위해 리덕스에서 로그인 상태를 가져옴
+  const isLoggedIn = useSelector((state) => state.loginSignup.isLoggedIn);
+  const userEmail = useSelector((state) => state.loginSignup.userEmail);
 
   const handleRemoveTodo = (id) => {
-    if (window.confirm("삭제할까?")) {
+    if (window.confirm("삭제하시겠습니까?")) {
       dispatch(removeTodo(id)); // removeTodo 액션 디스패치하여 Redux store의 상태 업데이트
     }
   };
@@ -27,7 +31,12 @@ export default function Main() {
         >
           <button
             onClick={() => {
-              navigate("/create");
+              if (!isLoggedIn) {
+                alert("로그인 후 이용해주세요.");
+                navigate("/login");
+              } else {
+                navigate("/create");
+              }
             }}
             style={{
               border: "none",
@@ -41,10 +50,10 @@ export default function Main() {
             추가
           </button>
         </div>
-        {todos.map((할일) => {
+        {todos.map((post) => {
           return (
             <div
-              key={할일.id}
+              key={post.id}
               style={{
                 backgroundColor: "#EEEEEE",
                 height: "100px",
@@ -56,7 +65,7 @@ export default function Main() {
             >
               <div
                 onClick={() => {
-                  navigate(`/detail/${할일.id}`);
+                  navigate(`/detail/${post.id}`);
                 }}
                 style={{
                   flex: 4,
@@ -64,7 +73,7 @@ export default function Main() {
                   cursor: "pointer",
                 }}
               >
-                <h2>{할일.title}</h2>
+                <h2>{post.title}</h2>
                 <p
                   style={{
                     width: "300px",
@@ -73,7 +82,7 @@ export default function Main() {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  {할일.content}
+                  {post.content}
                 </p>
               </div>
               <div
@@ -86,11 +95,15 @@ export default function Main() {
                   gap: "12px",
                 }}
               >
-                <div>{할일.author}</div>
+                <div>{post.author}</div>
                 <div>
                   <button
                     onClick={() => {
-                      navigate(`/edit/${할일.id}`);
+                      if (post.author !== userEmail) {
+                        alert("수정 권한이 없습니다.");
+                        return; //return을 써서 페이지가 전환되는 것을 막음.
+                      }
+                      navigate(`/edit/${post.id}`);
                     }}
                     style={{
                       border: "none",
@@ -106,7 +119,11 @@ export default function Main() {
                   </button>
                   <button
                     onClick={() => {
-                      handleRemoveTodo(할일.id); // 삭제 버튼을 누를 때 handleRemoveTodo 함수 호출}});
+                      if (post.author !== userEmail) {
+                        alert("삭제 권한이 없습니다.");
+                        return; //리턴으로 막아줌
+                      }
+                      handleRemoveTodo(post.id); // 삭제 버튼을 누를 때 handleRemoveTodo 함수 호출
                     }}
                     style={{
                       border: "none",

@@ -17,7 +17,17 @@ function App() {
       <Route path="/create" element={<Create />} />
       <Route path="/edit/:id" element={<Edit />} />
       <Route path="/signup" element={<Signup />} />
-      <Route path="/login" element={<Login />} />
+      <Route
+        path="/login"
+        element={
+          <Login
+          // email={email}
+          // setEmail={setEmail}
+          // password={password}
+          // setPassword={setPassword}
+          />
+        }
+      />
     </Routes>
   );
 }

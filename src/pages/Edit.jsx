@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { editTodo } from "../slices/todosSlice";
+import { editTodo } from "../redux/slices/todosSlice";
 export default function Edit() {
   const todos = useSelector((state) => state.할일들); // slice의 상태를 가져옴
   console.log(todos);
@@ -14,14 +14,14 @@ export default function Edit() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const 할일업뎃 = todos.find((item) => item.id === id);
+  const findId = todos.find((item) => item.id === id);
 
   const [editedTodo, setEditedTodo] = useState({
-    title: 할일업뎃 ? 할일업뎃.title : "",
-    content: 할일업뎃 ? 할일업뎃.content : "",
+    title: findId ? findId.title : "",
+    content: findId ? findId.content : "",
   });
 
-  if (!할일업뎃) {
+  if (!findId) {
     // id에 해당하는 할일이 없는 경우에 대한 처리
     return (
       <>
@@ -36,11 +36,10 @@ export default function Edit() {
   const submitHandler = (e) => {
     e.preventDefault();
     const updatedTodos = {
-      ...할일업뎃,
+      ...findId,
       title: editedTodo.title,
       content: editedTodo.content,
     };
-
     dispatch(editTodo(updatedTodos)); // editTodo 액션 디스패치하여 Redux store의 상태 업데이트
     navigate("/");
   };

@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { nanoid } from "nanoid";
 
 const todos = createSlice({
-  name: "할일들",
+  name: "posts",
   initialState: [
     {
       id: nanoid(),

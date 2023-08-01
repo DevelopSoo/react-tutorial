@@ -4,9 +4,11 @@ import Container from "../common/Container";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { removeTodo } from "../slices/todosSlice"; // addRemoveSlice에서 removeTodo 액션을 가져옴
+import { removeTodo } from "../redux/slices/todosSlice"; // addRemoveSlice에서 removeTodo 액션을 가져옴
 export default function Detail() {
   const todos = useSelector((state) => state.할일들);
+  //로그인한 이메일주소를 가져오기 위해 리덕스 상태를 가져온다.
+  const userEmail = useSelector((state) => state.loginSignup.userEmail);
 
   const dispatch = useDispatch();
 
@@ -14,15 +16,15 @@ export default function Detail() {
   const { id } = useParams();
 
   const handleRemoveTodo = (id) => {
-    if (window.confirm("삭제할까?")) {
+    if (window.confirm("삭제하시겠습니까?")) {
       dispatch(removeTodo(id)); // removeTodo 액션 디스패치하여 Redux store의 상태 업데이트
-      navigate("/");
+      navigate("/"); //삭제후 디테일 페이지를 나가고 메인페이지로 이동
     }
   };
 
-  const 할일업뎃 = todos.find((item) => item.id === id);
+  const findId = todos.find((item) => item.id === id);
 
-  if (!할일업뎃 === 0) {
+  if (!findId) {
     // id에 해당하는 할일이 없는 경우에 대한 처리
     return (
       <>
@@ -47,7 +49,7 @@ export default function Detail() {
             padding: "12px",
           }}
         >
-          {할일업뎃.title}
+          {findId.title}
         </h1>
         <div
           style={{
@@ -57,47 +59,59 @@ export default function Detail() {
             padding: "12px",
           }}
         >
-          {할일업뎃.content}
+          {findId.content}
         </div>
-        <div
-          style={{
-            marginTop: "12px",
-            display: "flex",
-            justifyContent: "end",
-          }}
-        >
-          <button
-            onClick={() => {
-              navigate(`/edit/${할일업뎃.id}`);
-            }}
+        {findId.author === userEmail ? (
+          <div
             style={{
-              border: "none",
-              padding: "8px",
-              borderRadius: "6px",
-              backgroundColor: "orange",
-              color: "white",
-              cursor: "pointer",
-              marginRight: "6px",
+              marginTop: "12px",
+              display: "flex",
+              justifyContent: "end",
             }}
           >
-            수정
-          </button>
-          <button
-            onClick={() => {
-              handleRemoveTodo(할일업뎃.id); // 삭제 버튼을 누를 때 handleRemoveTodo 함수 호출
-            }}
-            style={{
-              border: "none",
-              padding: "8px",
-              borderRadius: "6px",
-              backgroundColor: "red",
-              color: "white",
-              cursor: "pointer",
-            }}
-          >
-            삭제
-          </button>
-        </div>
+            <button
+              onClick={() => {
+                // if (findId.author !== userEmail) {
+                //   alert("수정 권한이 없습니다.");
+                //   return; //return을 써서 페이지가 전환되는 것을 막음.
+                // }
+                navigate(`/edit/${findId.id}`);
+              }}
+              style={{
+                border: "none",
+                padding: "8px",
+                borderRadius: "6px",
+                backgroundColor: "orange",
+                color: "white",
+                cursor: "pointer",
+                marginRight: "6px",
+              }}
+            >
+              수정
+            </button>
+            <button
+              onClick={() => {
+                if (findId.author !== userEmail) {
+                  alert("삭제 권한이 없습니다.");
+                  return; //리턴으로 막아줌
+                }
+                handleRemoveTodo(findId.id); // 삭제 버튼을 누를 때 handleRemoveTodo 함수 호출
+              }}
+              style={{
+                border: "none",
+                padding: "8px",
+                borderRadius: "6px",
+                backgroundColor: "red",
+                color: "white",
+                cursor: "pointer",
+              }}
+            >
+              삭제
+            </button>
+          </div>
+        ) : (
+          ""
+        )}
       </Container>
     </>
   );
