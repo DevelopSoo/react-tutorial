@@ -8,7 +8,20 @@ export default function Main() {
   const navigate = useNavigate();
   // @ts-ignore
   const posts = useSelector((state) => state.posts);
+  // @ts-ignore
+  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
+
+  const isLoggedIn = () => {
+    if (!user.email) return false;
+    return true;
+  };
+
+  const isSameUser = (author) => {
+    if (user.email !== author) return false;
+    return true;
+  };
+
   return (
     <>
       <Header />
@@ -22,6 +35,9 @@ export default function Main() {
         >
           <button
             onClick={() => {
+              if (!isLoggedIn()) {
+                return alert("로그인 후 사용할 수 있습니다.");
+              }
               navigate("/create");
             }}
             style={{
@@ -84,6 +100,12 @@ export default function Main() {
               <div>
                 <button
                   onClick={() => {
+                    if (!isLoggedIn()) {
+                      return alert("로그인 후 사용할 수 있습니다.");
+                    }
+                    if (!isSameUser(post.author)) {
+                      return alert("작성자가 일치하지 않습니다.");
+                    }
                     navigate("/edit", {
                       state: {
                         post,
@@ -104,6 +126,12 @@ export default function Main() {
                 </button>
                 <button
                   onClick={() => {
+                    if (!isLoggedIn()) {
+                      return alert("로그인 후 사용할 수 있습니다.");
+                    }
+                    if (!isSameUser(post.author)) {
+                      return alert("작성자가 일치하지 않습니다.");
+                    }
                     const result = window.confirm("정말로 삭제하시겠습니까?");
                     if (result) {
                       dispatch(deletePost(post.id));

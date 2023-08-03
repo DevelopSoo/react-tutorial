@@ -5,8 +5,23 @@ import Create from "./pages/Create";
 import Edit from "./pages/Edit";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
+import { useEffect } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./lib/firebase/firebase";
+import { useDispatch } from "react-redux";
+import { setUser } from "./redux/user";
 
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      dispatch(
+        setUser({
+          email: user?.email,
+        })
+      );
+    });
+  }, []);
   return (
     // 페이지 이동에 사용되는 Route 태그를 위해선 Routes로 먼저 감싸야 한다.
     <Routes>
