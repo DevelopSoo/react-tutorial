@@ -6,8 +6,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { edit } from '../../redux/modules/todosSlice';
 import Button from '../../components/button/Button';
 import * as S from './Edit.styled';
+import { auth } from '../../firebase';
 
 export default function Edit() {
+  // useLocation 리팩토링
+
+  const reduxUsers = useSelector((state) => state.users);
+  const loginUser = reduxUsers.find((user) => user.email === auth.currentUser?.email);
+
   const { id } = useParams();
   const disPatch = useDispatch();
   const reduxTodos = useSelector((state) => state.todos);
@@ -22,7 +28,7 @@ export default function Edit() {
     id: findTodo.id,
     title,
     content,
-    author: '김선익'
+    author: loginUser.email
   };
 
   if (!findTodo) {

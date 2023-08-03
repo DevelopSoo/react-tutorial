@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../common/Header';
 import Container from '../../common/Container';
@@ -6,27 +6,33 @@ import * as S from './Main.styled';
 import Button from '../../components/button/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { remove } from '../../redux/modules/todosSlice';
+import { auth } from '../../firebase';
 
 export default function Main() {
+  const reduxUsers = useSelector((state) => state.users);
+  const loginUser = reduxUsers.find((user) => user.email === auth.currentUser?.email);
+
   // redux Todos를 연결합니다
+  // 검색, 서버데이터 요청 : 디바운싱 lodash
   const reduxTodos = useSelector((state) => state.todos);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [verify, setVerify] = useState(null);
-
-  const verifyUser = () => {
-    if (reduxTodos.author === '김선익') {
-      return setVerify(true);
-    } else {
-      return setVerify(false);
-    }
+  // 이름을 어떻게 작성하는게 좋은지 궁금합니다.
+  const addTodoUserVerify = (isLogin) => {
+    isLogin ? navigate('/create', { state: { loginUser } }) : alert('로그인 후 이용해주세요.');
   };
 
-  useEffect(() => {
-    verifyUser();
-  }, []);
+  const removeTodoUserVerify = (id) => {
+    const findTodo = reduxTodos.find((todo) => todo.id === id);
+    return findTodo.author === loginUser?.email ? true : false;
+  };
+
+  const editTodoUserVerify = (id) => {
+    const findTodo = reduxTodos.find((todo) => todo.id === id);
+    findTodo.author === loginUser?.email ? navigate(`/edit/${id}`) : alert('본인이 작성한 게시물이 아닙니다.');
+  };
 
   return (
     <>
@@ -37,7 +43,7 @@ export default function Main() {
             variant="solid"
             color="black"
             onClick={() => {
-              navigate('/create');
+              addTodoUserVerify(loginUser.isLogin);
             }}
           >
             추가
@@ -55,7 +61,7 @@ export default function Main() {
                 <S.TodoItemContent
                   onClick={() => {
                     // detail Page ID값 추가
-                    navigate(`/detail/${item.id}`);
+                    navigate(`/detail/${item.id}`, { state: { item } });
                   }}
                 >
                   {/* item.title에 접근해 제목을 출력합니다. */}
@@ -66,31 +72,33 @@ export default function Main() {
                 <S.TodoItemAuth>
                   {/* item.author에 접근해 작성자를 출력합니다. */}
                   <S.Author>{item.author}</S.Author>
-                  {verify ? (
-                    <div>
-                      <Button
-                        variant="solid"
-                        color="orange"
-                        onClick={(e) => {
-                          navigate(`/edit/${item.id}`);
-                          // id값을 url로 넣어주면 보안에 위험이 있다.
-                          // 수정은 권한이 있는 사람만 해야하기 때문에 URL형태로 관리하면 안됩니다.
-                          // navigate('/edit', { state: { post } });
-                        }}
-                      >
-                        수정
-                      </Button>
 
-                      <Button
-                        variant="solid"
-                        color="red"
-                        onClick={() => {
-                          dispatch(remove(item.id));
-                        }}
-                      >
-                        삭제
-                      </Button>
-                    </div>
+                  <Button
+                    variant="solid"
+                    color="orange"
+                    onClick={(e) => {
+                      editTodoUserVerify(item.id);
+                      // id값을 url로 넣어주면 보안에 위험이 있다.
+                      // 수정은 권한이 있는 사람만 해야하기 때문에 URL형태로 관리하면 안됩니다.
+                      // navigate('/edit', { state: { post } });
+                    }}
+                  >
+                    수정
+                  </Button>
+                  {removeTodoUserVerify(item.id) ? (
+                    <>
+                      <div>
+                        <Button
+                          variant="solid"
+                          color="red"
+                          onClick={() => {
+                            dispatch(remove(item.id));
+                          }}
+                        >
+                          삭제
+                        </Button>
+                      </div>
+                    </>
                   ) : null}
                 </S.TodoItemAuth>
               </S.TodoItem>

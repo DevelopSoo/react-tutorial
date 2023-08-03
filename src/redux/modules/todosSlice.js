@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import uuid from 'react-uuid';
+import { doc, setDoc } from 'firebase/firestore';
+import { db } from '../../firebase';
 
 const initialState = [
   { id: uuid(), title: '정예반 과제 하기', content: '내용', author: '김선익' },

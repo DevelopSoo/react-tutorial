@@ -2,32 +2,33 @@ import React, { useState } from 'react';
 import Header from '../common/Header';
 import Container from '../common/Container';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { add } from '../redux/modules/todosSlice';
 import uuid from 'react-uuid';
+import useInput from '../hooks/useInput';
 
 export default function Create() {
+  //로그인 상태만 확인
+  //북마크 상황 고려해보기
+  const { state } = useLocation();
+  const loginUser = state.loginUser;
+
   const navigate = useNavigate();
-  // useSelector로 redux 연결
   const dispatch = useDispatch();
 
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-
-  const titleChangeHandler = (e) => {
-    setTitle(e.target.value);
+  const initialState = {
+    title: '',
+    content: ''
   };
 
-  const contentChangeHandler = (e) => {
-    setContent(e.target.value);
-  };
+  const [{ title, content }, onChange, reset] = useInput(initialState);
 
   // 새로운 todo 객체 생성
   const newTodo = {
     id: uuid(),
     title,
     content,
-    author: '김선익'
+    author: loginUser.email
   };
 
   return (
@@ -61,8 +62,9 @@ export default function Create() {
                 padding: '8px',
                 boxSizing: 'border-box'
               }}
-              // value={title}
-              onChange={titleChangeHandler}
+              name="title"
+              value={title}
+              onChange={onChange}
             />
           </div>
 
@@ -83,7 +85,9 @@ export default function Create() {
                 padding: '12px',
                 boxSizing: 'border-box'
               }}
-              onChange={contentChangeHandler}
+              name="content"
+              value={content}
+              onChange={onChange}
             />
           </div>
           <button
