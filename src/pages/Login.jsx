@@ -1,8 +1,10 @@
 import React from "react";
 import Header from "../common/Header";
 import Container from "../common/Container";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+  const navigate = useNavigate();
   return (
     <>
       <Header />
@@ -89,6 +91,10 @@ export default function Login() {
                   backgroundColor: "#FF6969",
                   color: "white",
                   cursor: "pointer",
+                }}
+                onClick={() => {
+                  navigate("/signup");
+                  //홈버튼을 클릭하면 메인화면으로 이동됨. ("/")←이것이 메인
                 }}
               >
                 회원가입하러 가기

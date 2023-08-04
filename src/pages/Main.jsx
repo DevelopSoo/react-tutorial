@@ -2,9 +2,15 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../common/Header";
 import Container from "../common/Container";
+import { useSelector } from "react-redux";
+import { deletePost } from "../redux/posts";
+import { useDispatch } from "react-redux";
 
 export default function Main() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const todos = useSelector((state) => state.posts);
+  console.log(todos);
   return (
     <>
       <Header />
@@ -32,9 +38,11 @@ export default function Main() {
             추가
           </button>
         </div>
-        {[1, 2, 3, 4].map((item) => (
+        {/* props랑 맵 적용 */}
+        {todos.map((todo) => (
+          // 맵은 간편하게 하기위해서 쓰는것이다. app.js에 있는 배열이 todos인데 그것을 들고 온 것이다.
           <div
-            key={item}
+            key={todo.id}
             style={{
               backgroundColor: "#EEEEEE",
               height: "100px",
@@ -46,7 +54,7 @@ export default function Main() {
           >
             <div
               onClick={() => {
-                navigate("/detail/1");
+                navigate(`/detail/${todo.id}`);
               }}
               style={{
                 flex: 4,
@@ -54,7 +62,7 @@ export default function Main() {
                 cursor: "pointer",
               }}
             >
-              <h2>제목</h2>
+              <h2>{todo.title}</h2>
               <p
                 style={{
                   width: "300px",
@@ -63,10 +71,7 @@ export default function Main() {
                   whiteSpace: "nowrap",
                 }}
               >
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit.Lorem
-                ipsum dolor, sit amet consectetur adipisicing elit.Lorem ipsum
-                dolor, sit amet consectetur adipisicing elit.Lorem ipsum dolor,
-                sit amet consectetur adipisicing elit.
+                {todo.content}
               </p>
             </div>
             <div
@@ -79,11 +84,11 @@ export default function Main() {
                 gap: "12px",
               }}
             >
-              <div>작성자</div>
+              <div>{todo.author}</div>
               <div>
                 <button
                   onClick={() => {
-                    navigate("/edit");
+                    navigate(`/edit/${todo.id}`);
                   }}
                   style={{
                     border: "none",
@@ -100,6 +105,7 @@ export default function Main() {
                 <button
                   onClick={() => {
                     alert("삭제할까?");
+                    dispatch(deletePost(todo.id));
                   }}
                   style={{
                     border: "none",

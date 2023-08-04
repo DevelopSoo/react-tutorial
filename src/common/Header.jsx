@@ -19,6 +19,10 @@ export default function Header() {
           color: "gray",
           cursor: "pointer",
         }}
+        onClick={() => {
+          navigate("/");
+          //홈버튼을 클릭하면 메인화면으로 이동됨. ("/")←이것이 메인
+        }}
       >
         <FaHome />
       </h1>
