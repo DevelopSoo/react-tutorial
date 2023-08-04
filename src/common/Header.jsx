@@ -1,17 +1,18 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FaHome } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutSuccess } from "../redux/slice/authSlice";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase";
 
 export default function Header() {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const isLoggedIn = useSelector((state) => state.authSlice.isLoggedIn); // 로그인 상태를 가져옴
-  const user = useSelector((state) => state.authSlice.user);
+  const user = useSelector((state) => state.authSlice.user); // 로그인(이메일) 상태를 가져옴
 
-  const logoutHandler = () => {
-    dispatch(logoutSuccess());
+  const logoutHandler = async () => {
+    await signOut(auth); // firebase에서 로그아웃
+    dispatch(logoutSuccess()); // UI적으로 로그아웃
   };
 
   return (
@@ -41,7 +42,7 @@ export default function Header() {
           gap: "12px",
         }}
       >
-        {isLoggedIn ? (
+        {user ? (
           <>
             <div>{user}</div>
             <button onClick={logoutHandler}>로그아웃</button>

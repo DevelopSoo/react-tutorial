@@ -1,9 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  // 로그인되지 않은 상태로 시작할 수 있도록 셋팅
-  // 로그인 상태가 아니기 때문에 로그인한 사용자 정보가 없음
-  isLoggedIn: false,
   user: null,
 };
 
@@ -13,17 +10,14 @@ const authSlice = createSlice({
   reducers: {
     // 로그인 상태로 변경하는 함수
     loginSuccess: (state, action) => {
-      state.isLoggedIn = true;
-      state.user = action.payload;
+      state.user = action.payload; // 값이 있으면 'true'
     },
     // 로그아웃 상태로 변경하는 함수
     logoutSuccess: (state) => {
-      state.isLoggedIn = false;
-      state.user = null;
+      state.user = null; // null은 'false'
     },
   },
 });
 
 export const { loginSuccess, logoutSuccess } = authSlice.actions;
-
 export default authSlice;

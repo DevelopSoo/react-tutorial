@@ -10,13 +10,15 @@ export default function Main() {
   const navigate = useNavigate();
 
   const posts = useSelector((state) => state.posts);
-  const isLoggedIn = useSelector((state) => state.authSlice.isLoggedIn); // 로그인 상태를 가져옴
-  const user = useSelector((state) => state.authSlice.user); // user = 로그인한 email 정보를 가져옴
+  const user = useSelector((state) => state.authSlice.user); // 로그인한 email 정보를 가져옴
 
   const createBtnHandler = () => {
-    isLoggedIn
-      ? navigate("/create")
-      : alert("로그인이 필요합니다.") || navigate("/login");
+    if (user) {
+      navigate("/create");
+    } else {
+      alert("로그인이 필요합니다.");
+      navigate("/login");
+    }
   };
 
   return (
